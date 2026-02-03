@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException, Depends, APIRouter
 from datetime import datetime, timezone
 from app.core.security import decode_access_token
+from app.core.config import settings
 from app.models.enums import UserRole
 from app.core.security import hash_password
 from app.db.database import get_db
@@ -10,7 +11,7 @@ from app.db.database import get_db
 from app.models.user import User
 from app.schemas.user import UserOut, UserCreate, UserUpdate
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.root_path}/auth/login")
 router = APIRouter(prefix="/users", tags=["Users"])
 
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):

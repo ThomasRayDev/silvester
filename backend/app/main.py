@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 from app.db.database import Base, engine
+from app.core.config import settings
 from app.routers import user, auth, project, task, comment, enums
 
-app = FastAPI(title="Silvester backend", root_path="/api")
+app = FastAPI(title="Silvester backend", root_path=settings.root_path)
 
 Base.metadata.create_all(bind=engine)
 
