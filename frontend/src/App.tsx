@@ -1,9 +1,11 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import Dashboard from './pages/Dashboard';
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<div className="text-2xl font-bold">Главная</div>} />
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
   )
 }
