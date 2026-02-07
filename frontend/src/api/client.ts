@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useAuthStore } from '../stores/authStore';
 
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL || 'httop://localhost:8000',
@@ -9,7 +10,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-    const token = localStorage.getItem('access_token');
+    const token = useAuthStore.getState().token;
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
@@ -20,7 +21,7 @@ api.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response.status === 401) {
-            localStorage.removeItem('access_token');
+            useAuthStore.getState().logout();
         }
         return Promise.reject(error);
     }
