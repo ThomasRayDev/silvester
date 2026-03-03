@@ -1,5 +1,5 @@
 import { useAuthStore } from '../../stores/authStore';
-import SearchInput from '../ui/SearchInput';
+import { SearchInput } from '../ui';
 
 export default function Header() {
   const { logout } = useAuthStore();

@@ -1,9 +1,12 @@
 import { useState } from "react"
 import { LogOut } from "lucide-react"
 import SidebarNav from "./SidebarNav"
+import { useLocation } from "react-router-dom"
+import { defaultItems } from "./SidebarNav"
 
 export default function Sidebar() {
-  const [activeIndex, setActiveIndex] = useState(0)
+  const location = useLocation()
+  const [activeIndex, setActiveIndex] = useState(defaultItems.findIndex(item => item.url === location.pathname))
 
   return (
     <div className="w-72 min-h-full bg-[#0f172b] border-r border-gray-800 flex flex-col items-center">

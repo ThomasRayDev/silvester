@@ -1,18 +1,20 @@
+import { Link } from "react-router-dom"
 import { Briefcase, ClipboardList, FileText, LayoutDashboard, MessageSquare, History, Settings, type LucideIcon } from "lucide-react"
 
 export type SidebarNavItem = {
   icon: LucideIcon
   label: string
+  url: string
 }
 
-const defaultItems: SidebarNavItem[] = [
-  { icon: LayoutDashboard, label: "Дашборд" },
-  { icon: Briefcase, label: "Проекты" },
-  { icon: ClipboardList, label: "Мои задачи" },
-  { icon: MessageSquare, label: "Запросы с объекта" },
-  { icon: FileText, label: "Отчёты" },
-  { icon: History, label: "История изменений" },
-  { icon: Settings, label: "Настройки" },
+export const defaultItems: SidebarNavItem[] = [
+  { icon: LayoutDashboard, label: "Дашборд", url: "/dashboard" },
+  { icon: Briefcase, label: "Проекты", url: "/projects" },
+  { icon: ClipboardList, label: "Мои задачи", url: "/tasks" },
+  { icon: MessageSquare, label: "Запросы с объекта", url: "/requests" },
+  { icon: FileText, label: "Отчёты", url: "/reports" },
+  { icon: History, label: "История изменений", url: "/history" },
+  { icon: Settings, label: "Настройки", url: "/settings" },
 ]
 
 export type SidebarNavProps = {
@@ -29,7 +31,8 @@ export default function SidebarNav({ activeIndex, items = defaultItems, onItemCl
           const isActive = activeIndex === index
           const Icon = item.icon
           return (
-            <div
+            <Link 
+              to={item.url}
               key={index}
               role={onItemClick ? "button" : undefined}
               onClick={onItemClick ? () => onItemClick(index) : undefined}
@@ -41,7 +44,7 @@ export default function SidebarNav({ activeIndex, items = defaultItems, onItemCl
             >
               <Icon className="shrink-0" />
               {item.label}
-            </div>
+            </Link>
           )
         })}
       </div>
