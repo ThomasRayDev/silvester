@@ -1,4 +1,5 @@
 import { Input, Logo } from "../components/ui";
+import { Button } from "../components/ui/button";
 
 export default function Login() {
     return (
@@ -15,7 +16,10 @@ export default function Login() {
                             </div>
                             <div className="mt-4 flex flex-col gap-1">
                                 <div className="text-white">Пароль</div>
-                                <Input />
+                                <Input type="password" />
+                            </div>
+                            <div>
+                                <Button className="px-8 mt-4" variant="default">Войти</Button>
                             </div>
                         </div>
                     </div>
