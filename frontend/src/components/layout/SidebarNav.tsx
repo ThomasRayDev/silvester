@@ -39,7 +39,7 @@ export default function SidebarNav({ activeIndex, items = defaultItems, onItemCl
               className={`flex gap-3 py-4 px-3 -mx-3 rounded-lg transition-colors ${
                 isActive
                   ? "text-[#00d5be] bg-[#00d5be]/10"
-                  : "text-gray-600 dark:text-gray-400 hover:text-gray-400 dark:hover:text-gray-300"
+                  : "text-gray-400 hover:text-gray-300"
               } ${onItemClick ? "cursor-pointer" : ""}`}
             >
               <Icon className="shrink-0" />

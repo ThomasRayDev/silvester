@@ -19,7 +19,7 @@ export default function Sidebar() {
       <div className="min-h-[calc(100%-173px)] w-full">
         <SidebarNav activeIndex={activeIndex} onItemClick={setActiveIndex} />
       </div>
-      <div className="text-gray-600 dark:text-gray-400 flex gap-2 font-semibold text-lg justify-center items-center py-7 border-t border-gray-800 w-full pr-30 cursor-pointer hover:text-red-400">
+      <div className="text-gray-400 flex gap-2 font-semibold text-lg justify-center items-center py-7 border-t border-gray-800 w-full pr-30 cursor-pointer hover:text-red-400">
         <LogOut />
         <div>Выход</div>
       </div>
