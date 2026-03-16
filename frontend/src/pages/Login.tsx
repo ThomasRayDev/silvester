@@ -1,9 +1,9 @@
 import React from "react";
-import api from "@/api/client";
 import { useNavigate } from "react-router-dom";
 import { Input, Logo } from "../components/ui";
 import { Button } from "../components/ui/button";
 import { useAuthStore } from "@/stores/authStore";
+import { loginRequest } from "@/api/auth";
 
 export default function Login() {
     const navigate = useNavigate();
@@ -12,17 +12,17 @@ export default function Login() {
     const { setToken } = useAuthStore();
 
     const handleSubmit = async () => {
-        if (login === "" || password === "") return alert("Вы ничего не ввели");
-        const params = new URLSearchParams();
-        params.append("username", login);
-        params.append("password", password);
-        const response = await api.post('/auth/login', params, { 
-            headers: { 
-                "Content-Type": "application/x-www-form-urlencoded" 
-            } 
-        });
-        setToken(response.data.access_token);
-        navigate("/dashboard");
+        if (!login || !password) {
+            alert("Вы ничего не ввели");
+            return;
+        }
+        try {
+            const data = await loginRequest(login, password);
+            setToken(data.access_token);
+            navigate("/dashboard");
+        } catch (error) {
+            alert("Неверный логин или пароль");
+        }
     }
 
     return (
