@@ -1,7 +1,42 @@
-import { Input, Logo } from "../components/ui";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema, type LoginFormData } from "../schemas/loginSchema";
+
+import { Logo } from "../components/ui";
 import { Button } from "../components/ui/button";
 
+import { useAuthStore } from "@/stores/authStore";
+import { loginRequest } from "@/api/auth";
+import { toast } from "sonner";
+import { FormRow } from "@/components/layout/FormRow";
+
 export default function Login() {
+    const navigate = useNavigate();
+    const { setToken } = useAuthStore();
+
+    const form = useForm<LoginFormData>({
+        resolver: zodResolver(loginSchema),
+        defaultValues: {
+            username: "",
+            password: "",
+        }
+    })
+
+    const onSubmit = async (data: LoginFormData) => {
+        try {
+            const { username, password } = data;
+            const response = await loginRequest(username, password);
+            setToken(response.access_token);
+            navigate("/dashboard");
+        } catch (error) {
+            toast.error("Ошибка", {
+                description: "Неверное имя пользователя или пароль",
+                position: "top-center",
+            })
+        }
+    }
+
     return (
         <div className="flex justify-center items-center w-full">
             <div className="bg-[#0c1327] w-[600px] h-[400px] border-gray-800 border rounded-2xl">
@@ -9,19 +44,24 @@ export default function Login() {
                 <div className="px-4 py-4">
                     <h2 className="text-white font-bold text-xl">Вход в систему</h2>
                     <div className="w-full flex justify-center">
-                        <div className="w-3/4">
-                            <div className="mt-4 flex flex-col gap-1">
-                                <div className="text-white">Логин</div>
-                                <Input />
-                            </div>
-                            <div className="mt-4 flex flex-col gap-1">
-                                <div className="text-white">Пароль</div>
-                                <Input type="password" />
-                            </div>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="w-3/4">
+                            <FormRow<LoginFormData>
+                                name="username"
+                                control={form.control}
+                                label="Имя пользователя"
+                                className="text-white"
+                            />
+                            <FormRow<LoginFormData>
+                                name="password"
+                                control={form.control}
+                                label="Пароль"
+                                type="password"
+                                className="text-white"
+                            />
                             <div>
-                                <Button className="px-8 mt-4" variant="default">Войти</Button>
+                                <Button className="px-8 my-4" variant="default" type="submit">Войти</Button>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>

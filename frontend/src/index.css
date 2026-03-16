@@ -10,8 +10,8 @@
     --foreground: oklch(0.145 0 0);
     --card: oklch(1 0 0);
     --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
+    --popover: oklch(0.1919 0.042 267.79);
+    --popover-foreground: oklch(1 0 0);
     --primary: oklch(0.79 0.13 183);
     --primary-foreground: oklch(0 0 0);
     --secondary: oklch(0.97 0 0);
@@ -126,4 +126,14 @@
   html {
     @apply font-sans;
     }
+}
+
+[data-sonner-toast] {
+  background: #0c1327 !important;
+  color: white !important;
+  border: 1px solid #1e2939 !important;
+}
+
+[data-sonner-toast] [data-description] {
+  color: #99a1af !important;
 }
