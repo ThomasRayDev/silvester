@@ -8,6 +8,7 @@ app = FastAPI(title="Silvester backend", root_path=settings.root_path)
 
 origins = [
   "http://localhost:5173",
+  'http://91.213.168.71',
 ]
 
 app.add_middleware(
