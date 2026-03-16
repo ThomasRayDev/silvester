@@ -3,8 +3,10 @@ import { LogOut } from "lucide-react"
 import SidebarNav from "./SidebarNav"
 import { useLocation } from "react-router-dom"
 import { defaultItems } from "./SidebarNav"
+import { useAuthStore } from "@/stores/authStore"
 
 export default function Sidebar() {
+  const { logout } = useAuthStore();
   const location = useLocation()
   const [activeIndex, setActiveIndex] = useState(defaultItems.findIndex(item => item.url === location.pathname))
 
@@ -19,7 +21,7 @@ export default function Sidebar() {
       <div className="min-h-[calc(100%-173px)] w-full">
         <SidebarNav activeIndex={activeIndex} onItemClick={setActiveIndex} />
       </div>
-      <div className="text-gray-400 flex gap-2 font-semibold text-lg justify-center items-center py-7 border-t border-gray-800 w-full pr-30 cursor-pointer hover:text-red-400">
+      <div className="text-gray-400 flex gap-2 font-semibold text-lg justify-center items-center py-7 border-t border-gray-800 w-full pr-30 cursor-pointer hover:text-red-400" onClick={logout}>
         <LogOut />
         <div>Выход</div>
       </div>
