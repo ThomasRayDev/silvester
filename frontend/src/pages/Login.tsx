@@ -29,9 +29,13 @@ export default function Login() {
             const response = await loginRequest(username, password);
             setToken(response.access_token);
             navigate("/dashboard");
-        } catch (error) {
+        } catch (error: any) {
+            let description = "Неверное имя пользователя или пароль";
+            if (error.status != 401) { 
+                description = "Что-то пошло не так, обратитесь к администратору" 
+            }
             toast.error("Ошибка", {
-                description: "Неверное имя пользователя или пароль",
+                description,
                 position: "top-center",
             })
         }
