@@ -1,27 +1,39 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Input, Logo } from "../components/ui";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema, type LoginFormData } from "../schemas/loginSchema";
+
+import { Logo } from "../components/ui";
 import { Button } from "../components/ui/button";
+
 import { useAuthStore } from "@/stores/authStore";
 import { loginRequest } from "@/api/auth";
+import { toast } from "sonner";
+import { FormRow } from "@/components/layout/FormRow";
 
 export default function Login() {
     const navigate = useNavigate();
-    const [login, setLogin] = React.useState("")
-    const [password, setPassword] = React.useState("")
     const { setToken } = useAuthStore();
 
-    const handleSubmit = async () => {
-        if (!login || !password) {
-            alert("Вы ничего не ввели");
-            return;
+    const form = useForm<LoginFormData>({
+        resolver: zodResolver(loginSchema),
+        defaultValues: {
+            username: "",
+            password: "",
         }
+    })
+
+    const onSubmit = async (data: LoginFormData) => {
         try {
-            const data = await loginRequest(login, password);
-            setToken(data.access_token);
+            const { username, password } = data;
+            const response = await loginRequest(username, password);
+            setToken(response.access_token);
             navigate("/dashboard");
         } catch (error) {
-            alert("Неверный логин или пароль");
+            toast.error("Ошибка", {
+                description: "Неверное имя пользователя или пароль",
+                position: "top-center",
+            })
         }
     }
 
@@ -32,19 +44,24 @@ export default function Login() {
                 <div className="px-4 py-4">
                     <h2 className="text-white font-bold text-xl">Вход в систему</h2>
                     <div className="w-full flex justify-center">
-                        <div className="w-3/4">
-                            <div className="mt-4 flex flex-col gap-1">
-                                <div className="text-white">Логин</div>
-                                <Input value={login} onChange={(event) => setLogin(event.target.value)} />
-                            </div>
-                            <div className="mt-4 flex flex-col gap-1">
-                                <div className="text-white">Пароль</div>
-                                <Input type="password" value={password} onChange={(event) => setPassword(event.target.value)} />
-                            </div>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="w-3/4">
+                            <FormRow<LoginFormData>
+                                name="username"
+                                control={form.control}
+                                label="Имя пользователя"
+                                className="text-white"
+                            />
+                            <FormRow<LoginFormData>
+                                name="password"
+                                control={form.control}
+                                label="Пароль"
+                                type="password"
+                                className="text-white"
+                            />
                             <div>
-                                <Button className="px-8 mt-4" variant="default" onClick={handleSubmit}>Войти</Button>
+                                <Button className="px-8 my-4" variant="default" type="submit">Войти</Button>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
