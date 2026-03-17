@@ -1,3 +1,4 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,8 +11,11 @@ import { useAuthStore } from "@/stores/authStore";
 import { loginRequest } from "@/api/auth";
 import { toast } from "sonner";
 import { FormRow } from "@/components/layout/FormRow";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function Login() {
+    const [isLoading, setIsLoading] = React.useState(false);
+
     const navigate = useNavigate();
     const { setToken } = useAuthStore();
 
@@ -24,6 +28,7 @@ export default function Login() {
     })
 
     const onSubmit = async (data: LoginFormData) => {
+        setIsLoading(true);
         try {
             const { username, password } = data;
             const response = await loginRequest(username, password);
@@ -38,6 +43,8 @@ export default function Login() {
                 description,
                 position: "top-center",
             })
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -63,7 +70,10 @@ export default function Login() {
                                 className="text-white"
                             />
                             <div>
-                                <Button className="px-8 my-4" variant="default" type="submit">Войти</Button>
+                                <Button className="my-4 w-28 transition-all" variant="default" type="submit" disabled={isLoading}>
+                                    {isLoading && <Spinner data-icon="inline-start" />}
+                                    Войти
+                                </Button>
                             </div>
                         </form>
                     </div>
