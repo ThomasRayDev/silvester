@@ -25,9 +25,9 @@ export default function MainLayout() {
     return (
     <div className="min-h-screen bg-[#020618] flex">
       <Sidebar />
-      <div className="w-full">
+      <div className="w-full ml-72">
         <Header />
-        <main className="p-6">
+        <main className="p-6 mt-20">
             <Outlet />
         </main>
       </div>

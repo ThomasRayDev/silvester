@@ -17,7 +17,7 @@ export default function Header() {
   }, []);
 
   return (
-      <header className="w-full px-4 flex items-center justify-between bg-[#0c1327] h-20 border-b border-gray-800">
+      <header className="fixed w-[calc(100vw-288px)] px-4 flex items-center justify-between bg-[#0c1327] h-20 border-b border-gray-800">
         <SearchInput />
         <div className="flex gap-3 items-center">
           <div className="flex flex-col text-sm text-white">

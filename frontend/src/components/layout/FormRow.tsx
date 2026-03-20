@@ -9,6 +9,8 @@ interface FormRowProps<T> {
   type?: string;
   placeholder?: string;
   className?: string;
+  value?: string;
+  disabled?: boolean;
   labelSize?: string;
 }
 
@@ -19,6 +21,8 @@ export const FormRow = <T,>({
   type = "text",
   placeholder,
   className,
+  value,
+  disabled,
   labelSize = "sm",
 }: FormRowProps<T>) => (
   <Controller
@@ -27,7 +31,7 @@ export const FormRow = <T,>({
     render={({ field, fieldState }) => (
       <Field data-invalid={fieldState.invalid} className={className}>
         <FieldLabel htmlFor={field.name} className={`text-${labelSize}`}>{label}</FieldLabel>
-        <Input {...field} id={field.name} type={type} placeholder={placeholder} aria-invalid={fieldState.invalid} />
+        <Input {...field} id={field.name} type={type} placeholder={placeholder} aria-invalid={fieldState.invalid} value={value} disabled={disabled} />
         {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
       </Field>
     )}

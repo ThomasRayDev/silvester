@@ -96,7 +96,7 @@ def update_user(user_id: int, user_update: UserUpdate, current_admin: User = Dep
       raise HTTPException(status_code=400, detail="Email already exists")
   
   # Хеширование пароля, если он изменяется
-  if "password" in update_data:
+  if "password" in update_data and update_data["password"] != "":
     update_data["password_hash"] = hash_password(update_data.pop("password"))
   
   # Обновление полей
