@@ -60,14 +60,14 @@ export default function Login() {
                                 name="username"
                                 control={form.control}
                                 label="Имя пользователя"
-                                className="text-white"
+                                className="text-white mt-4"
                             />
                             <FormRow<LoginFormData>
                                 name="password"
                                 control={form.control}
                                 label="Пароль"
                                 type="password"
-                                className="text-white"
+                                className="text-white mt-4"
                             />
                             <div>
                                 <Button className="my-4 w-28 transition-all" variant="default" type="submit" disabled={isLoading}>
