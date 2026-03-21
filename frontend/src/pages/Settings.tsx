@@ -80,7 +80,12 @@ export default function Settings() {
   const submitCreateUser = async (data: AdminCreateUserData) => {
     setCreateUserLoading(true);
     try {
-      const response = await createNewUser(data);
+      const response = await createNewUser({
+        username: data.createUserUsername,
+        email: data.createUserEmail,
+        password: data.createUserPassword,
+        role: data.createUserRole
+      });
       console.log(response);
       toast.success("Создание пользователя", { 
         description: `Пользователь ${data.createUserUsername} успешно создан`,
