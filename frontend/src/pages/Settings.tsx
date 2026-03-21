@@ -92,6 +92,7 @@ export default function Settings() {
         position: "top-center",
        });
        createUserForm.reset();
+       fetchUsers();
     } catch (error) {
       toast.error("Ошибка", {
         description: "Что-то пошло не так, обратитесь к администратору",
