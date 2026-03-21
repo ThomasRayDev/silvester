@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { adminCreateUserSchema, type AdminCreateUserData } from "@/schemas/adminCreateUserSchema";
 import { adminEditUserSchema, type AdminEditUserData } from "@/schemas/adminEditUserSchema";
+import { changePasswordSchema, type ChangePasswordData } from "@/schemas/changePasswordSchema";
+
 import { useUserStore } from "@/stores/userStore";
 import { createNewUser, getAllUsers, updateUser } from "@/api/user";
 import { getRolesEnum } from "@/api/enums";
@@ -13,16 +15,21 @@ import { FormRow } from "@/components/layout/FormRow";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { SlidersHorizontal } from "lucide-react";
+import { Lock, Shield, SlidersHorizontal } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
 import { Input } from "@/components/ui/Input";
 
 export default function Settings() {
-  const [createUserLoading, setCreateUserLoading] = React.useState(false);
-  const [editUserLoading, setEditUserLoading] = React.useState(false);
-  const [selectedUserId, setSelectedUserId] = React.useState<string>("");
   const [rolesEnum, setRolesEnum] = React.useState<{ label: string; value: string }[]>([]);
   const [userList, setUserList] = React.useState<{ username: string, email: string, id: number, role: string, created_at: string, updated_at: string }[]>([]);
+
+  const [createUserLoading, setCreateUserLoading] = React.useState(false);
+  const [editUserLoading, setEditUserLoading] = React.useState(false);
+
+  const [selectedUserId, setSelectedUserId] = React.useState<string>("");
+
+  const [changePasswordState, setChangePasswordState] = React.useState(false);
+
   const user = useUserStore();
 
   const fetchUsers = async () => {
@@ -77,6 +84,15 @@ export default function Settings() {
   })
   const watchedUser = editUserForm.watch();
 
+  const changePasswordForm = useForm<ChangePasswordData>({
+    resolver: zodResolver(changePasswordSchema),
+    defaultValues: {
+      currentPassword: "",
+      newPassword: "",
+      repeatNewPassword: "",
+    }
+  })
+
   const submitCreateUser = async (data: AdminCreateUserData) => {
     setCreateUserLoading(true);
     try {
@@ -123,6 +139,10 @@ export default function Settings() {
       setEditUserLoading(false);
       fetchUsers();
     }
+  }
+
+  const submitChangePassword = (data: ChangePasswordData) => {
+    console.log(data);
   }
 
   return (
@@ -280,6 +300,43 @@ export default function Settings() {
           </div>
         </div>
       </div>}
+      <div className="mt-5 text-white w-full bg-[#0c1327] p-5 border-gray-800 border rounded-xl">
+        <div className="flex gap-3 items-center mb-6">
+          <Shield color="#00d5be" strokeWidth="2" size={28} />
+          <p className="font-semibold text-lg">Безопасность</p>
+        </div>
+        <div className="mx-20 flex flex-col gap-2 text-gray-400">
+          <div className="flex justify-between">
+            <div className="flex gap-3 items-center font-semibold">
+              <Lock color={"#99a1af"} />
+              <p className="text-white">Пароль</p>
+            </div>
+            <Button variant="secondary" onClick={() => { setChangePasswordState(!changePasswordState); changePasswordForm.reset(); }}>Изменить</Button>
+          </div>
+          <p className="text-sm">Последнее изменение: 21 марта 2026</p>
+          {changePasswordState && <form className="w-1/2 flex flex-col gap-2" onSubmit={changePasswordForm.handleSubmit(submitChangePassword)}>
+            <FormRow<ChangePasswordData> 
+              name="currentPassword"
+              control={changePasswordForm.control}
+              label="Текущий пароль"
+              type="password"
+            />
+            <FormRow<ChangePasswordData> 
+              name="newPassword"
+              control={changePasswordForm.control}
+              label="Новый пароль"
+              type="password"
+            />
+            <FormRow<ChangePasswordData> 
+              name="repeatNewPassword"
+              control={changePasswordForm.control}
+              label="Новый пароль ещё раз"
+              type="password"
+            />
+            <Button variant="secondary" className="w-max" type="submit">Сохранить</Button>
+          </form>}
+        </div>
+      </div>
     </>
   );
 }
