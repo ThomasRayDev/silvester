@@ -1,7 +1,7 @@
 import { Outlet, Navigate } from 'react-router-dom';
 import { Sidebar, Header } from '../components/layout';
 import { useAuthStore } from '../stores/authStore';
-import { useUserStore, type UserData } from '@/stores/userStore';
+import { useUserStore } from '@/stores/userStore';
 import { getCurrentUser } from '@/api/user';
 import React from 'react';
 

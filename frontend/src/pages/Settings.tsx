@@ -265,7 +265,9 @@ export default function Settings() {
                     {editUserLoading && <Spinner data-icon="inline-start" />}
                     Сохранить
                   </Button>
+                  <Button variant="secondary" disabled={!selectedUserId || editUserLoading} onClick={() => { setSelectedUserId(""); editUserForm.reset(); }}>Очистить</Button>
                   <Button variant="destructive" disabled>Удалить</Button>
+                  <Button variant="secondary" disabled>Заблокировать</Button>
                 </div>
               </form>
             </div>
