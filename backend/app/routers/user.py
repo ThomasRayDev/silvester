@@ -11,7 +11,7 @@ from app.db.database import get_db
 from app.models.user import User
 from app.schemas.user import UserOut, UserCreate, UserUpdate
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.root_path}/auth/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.root_path}auth/login")
 router = APIRouter(prefix="/users", tags=["Users"])
 
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
@@ -96,7 +96,7 @@ def update_user(user_id: int, user_update: UserUpdate, current_admin: User = Dep
       raise HTTPException(status_code=400, detail="Email already exists")
   
   # Хеширование пароля, если он изменяется
-  if "password" in update_data:
+  if "password" in update_data and update_data["password"] != "":
     update_data["password_hash"] = hash_password(update_data.pop("password"))
   
   # Обновление полей
