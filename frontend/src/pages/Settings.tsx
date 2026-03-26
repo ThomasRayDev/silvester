@@ -96,13 +96,12 @@ export default function Settings() {
   const submitCreateUser = async (data: AdminCreateUserData) => {
     setCreateUserLoading(true);
     try {
-      const response = await createNewUser({
+      await createNewUser({
         username: data.createUserUsername,
         email: data.createUserEmail,
         password: data.createUserPassword,
         role: data.createUserRole
       });
-      console.log(response);
       toast.success("Создание пользователя", { 
         description: `Пользователь ${data.createUserUsername} успешно создан`,
         position: "top-center",
@@ -122,8 +121,7 @@ export default function Settings() {
   const submitEditUser = async (data: AdminEditUserData) => {
     setEditUserLoading(true);
     try {
-      const response = await updateUser(data);
-      console.log(response);
+      await updateUser(data);
       toast.success("Редактирование пользователя", {
         description: `Пользователь ${data.username} успешно обновлен`,
         position: "top-center",

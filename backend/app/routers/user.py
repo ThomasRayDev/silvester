@@ -5,11 +5,11 @@ from datetime import datetime, timezone
 from app.core.security import decode_access_token
 from app.core.config import settings
 from app.models.enums import UserRole
-from app.core.security import hash_password
+from app.core.security import hash_password, verify_password
 from app.db.database import get_db
 
 from app.models.user import User
-from app.schemas.user import UserOut, UserCreate, UserUpdate
+from app.schemas.user import UserOut, UserCreate, UserUpdate, UserChangePassword
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.root_path}auth/login")
 router = APIRouter(prefix="/users", tags=["Users"])
@@ -107,3 +107,15 @@ def update_user(user_id: int, user_update: UserUpdate, current_admin: User = Dep
   db.commit()
   db.refresh(db_user)
   return db_user
+
+@router.post("/changePassword")
+def change_password(update_password: UserChangePassword, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+  update_data = update_password.model_dump()
+
+  if not verify_password(update_data["old_password"], current_user.password_hash):
+    raise HTTPException(status_code=401, detail="Invalid credentials")
+
+  current_user.password_hash = hash_password(update_data["new_password"])
+  db.commit()
+  db.refresh(current_user)
+  return { "message": "Password successfully updated" }
