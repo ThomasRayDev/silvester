@@ -24,6 +24,7 @@ class UserChangePassword(BaseModel):
 class UserOut(UserBase):
   id: int
   role: UserRole
+  password_updated: datetime
   created_at: datetime
   updated_at: datetime
 

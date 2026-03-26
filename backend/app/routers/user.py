@@ -98,6 +98,7 @@ def update_user(user_id: int, user_update: UserUpdate, current_admin: User = Dep
   # Хеширование пароля, если он изменяется
   if "password" in update_data and update_data["password"] != "":
     update_data["password_hash"] = hash_password(update_data.pop("password"))
+    db_user.password_updated = datetime.now(timezone.utc)
   
   # Обновление полей
   for key, value in update_data.items():
@@ -116,6 +117,8 @@ def change_password(update_password: UserChangePassword, current_user: User = De
     raise HTTPException(status_code=401, detail="Invalid credentials")
 
   current_user.password_hash = hash_password(update_data["new_password"])
+  current_user.updated_at = datetime.now(timezone.utc)
+  current_user.password_updated = datetime.now(timezone.utc)
   db.commit()
   db.refresh(current_user)
   return { "message": "Password successfully updated" }

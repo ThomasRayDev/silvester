@@ -1,4 +1,6 @@
 import React from "react";
+import dayjs from 'dayjs';
+import 'dayjs/locale/ru';
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -230,11 +232,11 @@ export default function Settings() {
                 </Field>
                 <Field>
                   <FieldLabel className="text-xs">Создан</FieldLabel>
-                  <Input disabled value={watchedUser.created_at} />
+                  <Input disabled value={watchedUser.created_at ? dayjs(watchedUser.created_at).locale('ru').format("DD.MM.YYYY HH:mm") : ""} />
                 </Field>
                 <Field>
                   <FieldLabel className="text-xs">Обновлен</FieldLabel>
-                  <Input disabled value={watchedUser.updated_at} />
+                  <Input disabled value={watchedUser.updated_at ? dayjs(watchedUser.updated_at).locale('ru').format("DD.MM.YYYY HH:mm") : ""} />
                 </Field>
               </div>
               <form onSubmit={editUserForm.handleSubmit(submitEditUser)}>
@@ -311,7 +313,7 @@ export default function Settings() {
             </div>
             <Button variant="secondary" onClick={() => { setChangePasswordState(!changePasswordState); changePasswordForm.reset(); }}>Изменить</Button>
           </div>
-          <p className="text-sm">Последнее изменение: 21 марта 2026</p>
+          <p className="text-sm">Последнее изменение: {dayjs(user.userData?.password_updated).locale('ru').format('DD MMMM YYYY, HH:mm')}</p>
           {changePasswordState && <form className="w-1/2 flex flex-col gap-2" onSubmit={changePasswordForm.handleSubmit(submitChangePassword)}>
             <FormRow<ChangePasswordData> 
               name="currentPassword"

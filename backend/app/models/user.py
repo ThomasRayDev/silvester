@@ -12,6 +12,7 @@ class User(Base):
   email = Column(String, unique=True, nullable=False)
   password_hash = Column(String, nullable=False)
   role = Column(Enum(UserRole, values_callable=lambda x: [e.value for e in x], name='userrole'), default=UserRole.USER)
+  password_updated = Column(DateTime, default=datetime.now(timezone.utc))
   created_at = Column(DateTime, default=datetime.now(timezone.utc))
   updated_at = Column(DateTime, default=datetime.now(timezone.utc))
 
