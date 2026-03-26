@@ -1,6 +1,7 @@
 import React from "react";
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
+import utc from 'dayjs/plugin/utc';
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -23,6 +24,8 @@ import { Spinner } from "@/components/ui/spinner";
 import { Input } from "@/components/ui/Input";
 
 export default function Settings() {
+  dayjs.extend(utc);
+
   const [userList, setUserList] = React.useState<{ username: string, email: string, id: number, role: string, created_at: string, updated_at: string }[]>([]);
 
   const [createUserLoading, setCreateUserLoading] = React.useState(false);
@@ -256,11 +259,11 @@ export default function Settings() {
                 </Field>
                 <Field>
                   <FieldLabel className="text-xs">Создан</FieldLabel>
-                  <Input disabled value={watchedUser.created_at ? dayjs(watchedUser.created_at).locale('ru').format("DD.MM.YYYY HH:mm") : ""} />
+                  <Input disabled value={watchedUser.created_at ? dayjs(watchedUser.created_at).local().locale('ru').format("DD.MM.YYYY HH:mm") : ""} />
                 </Field>
                 <Field>
                   <FieldLabel className="text-xs">Обновлен</FieldLabel>
-                  <Input disabled value={watchedUser.updated_at ? dayjs(watchedUser.updated_at).locale('ru').format("DD.MM.YYYY HH:mm") : ""} />
+                  <Input disabled value={watchedUser.updated_at ? dayjs(watchedUser.updated_at).local().locale('ru').format("DD.MM.YYYY HH:mm") : ""} />
                 </Field>
               </div>
               <form onSubmit={editUserForm.handleSubmit(submitEditUser)}>
@@ -337,7 +340,7 @@ export default function Settings() {
             </div>
             <Button variant="secondary" onClick={() => { setChangePasswordState(!changePasswordState); changePasswordForm.reset(); }}>Изменить</Button>
           </div>
-          <p className="text-sm">Последнее изменение: {dayjs(user.userData?.password_updated).locale('ru').format('DD MMMM YYYY, HH:mm')}</p>
+          <p className="text-sm">Последнее изменение: {dayjs(user.userData?.password_updated).local().locale('ru').format('DD MMMM YYYY, HH:mm')}</p>
           {changePasswordState && <form className="w-1/2 flex flex-col gap-2" onSubmit={changePasswordForm.handleSubmit(submitChangePassword)}>
             <FormRow<ChangePasswordData> 
               name="currentPassword"
