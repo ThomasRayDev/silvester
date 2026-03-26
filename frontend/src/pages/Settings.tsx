@@ -9,8 +9,9 @@ import { adminEditUserSchema, type AdminEditUserData } from "@/schemas/adminEdit
 import { changePasswordSchema, type ChangePasswordData } from "@/schemas/changePasswordSchema";
 
 import { useUserStore } from "@/stores/userStore";
-import { createNewUser, getAllUsers, updateUser } from "@/api/user";
+import { createNewUser, getAllUsers, updateUser, changePassword } from "@/api/user";
 import { getRolesEnum } from "@/api/enums";
+import { fetchCurrentUser } from "@/lib/userService";
 
 import { toast } from 'sonner';
 import { FormRow } from "@/components/layout/FormRow";
@@ -27,6 +28,7 @@ export default function Settings() {
 
   const [createUserLoading, setCreateUserLoading] = React.useState(false);
   const [editUserLoading, setEditUserLoading] = React.useState(false);
+  const [changePasswordLoading, setChangePasswordLoading] = React.useState(false);
 
   const [selectedUserId, setSelectedUserId] = React.useState<string>("");
 
@@ -141,8 +143,36 @@ export default function Settings() {
     }
   }
 
-  const submitChangePassword = (data: ChangePasswordData) => {
-    console.log(data);
+  const submitChangePassword = async (data: ChangePasswordData) => {
+    if (data.newPassword !== data.repeatNewPassword) {
+      toast.error("Ошибка", {
+        description: "Пароли не совпадают, проверьте правильность введенного пароля",
+        position: "top-center",
+      })
+      return;
+    }
+    setChangePasswordLoading(true);
+    try {
+      await changePassword(data);
+      toast.success("Смена пароля", {
+        description: "Пароль успешно изменен",
+        position: "top-center",
+      })
+      changePasswordForm.reset();
+      setChangePasswordState(false);
+    } catch (error: any) {
+      let description = "Неверный пароль, проверьте правильность введенного пароля"
+      if (error.status != 403) {
+        description = "Что-то пошло не так, обратитесь к администратору"
+      }
+      toast.error("Ошибка", {
+        description,
+        position: "top-center",
+      })
+    } finally {
+      setChangePasswordLoading(false);
+      await fetchCurrentUser();
+    }
   }
 
   return (
@@ -333,7 +363,10 @@ export default function Settings() {
               label="Новый пароль ещё раз"
               type="password"
             />
-            <Button variant="secondary" className="w-max" type="submit">Сохранить</Button>
+            <Button variant="secondary" className="w-max" type="submit" disabled={changePasswordLoading}>
+              {changePasswordLoading && <Spinner data-icon="inline-start" />}
+              Сохранить
+            </Button>
           </form>}
         </div>
       </div>

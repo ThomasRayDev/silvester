@@ -1,18 +1,11 @@
 import { Outlet, Navigate } from 'react-router-dom';
 import { Sidebar, Header } from '../components/layout';
 import { useAuthStore } from '../stores/authStore';
-import { useUserStore } from '@/stores/userStore';
-import { getCurrentUser } from '@/api/user';
+import { fetchCurrentUser } from '@/lib/userService';
 import React from 'react';
 
 export default function MainLayout() {
     const isAuth = useAuthStore((state) => state.token) !== null
-    const userStore = useUserStore();
-
-    const fetchCurrentUser = async () => {
-      const data = await getCurrentUser();
-      userStore.setUserData(data);
-    }
 
     React.useEffect(() => {
       fetchCurrentUser();

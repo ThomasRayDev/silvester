@@ -114,7 +114,7 @@ def change_password(update_password: UserChangePassword, current_user: User = De
   update_data = update_password.model_dump()
 
   if not verify_password(update_data["old_password"], current_user.password_hash):
-    raise HTTPException(status_code=401, detail="Invalid credentials")
+    raise HTTPException(status_code=403, detail="Invalid credentials")
 
   current_user.password_hash = hash_password(update_data["new_password"])
   current_user.updated_at = datetime.now(timezone.utc)
