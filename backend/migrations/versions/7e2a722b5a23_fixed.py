@@ -69,8 +69,8 @@ def upgrade() -> None:
     )
 
     # По желанию: удалить старый enum taskstatus, если он больше нигде не используется
-    # old_enum = postgresql.ENUM('NEW', 'IN_PROGRESS', 'COMPLETED', name='taskstatus')
-    # old_enum.drop(op.get_bind(), checkfirst=True)
+    old_enum = postgresql.ENUM('NEW', 'IN_PROGRESS', 'COMPLETED', name='taskstatus')
+    old_enum.drop(op.get_bind(), checkfirst=True)
     # ### end Alembic commands ###
 
 
