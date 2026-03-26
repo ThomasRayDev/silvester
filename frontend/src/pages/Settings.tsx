@@ -9,8 +9,8 @@ import { adminEditUserSchema, type AdminEditUserData } from "@/schemas/adminEdit
 import { changePasswordSchema, type ChangePasswordData } from "@/schemas/changePasswordSchema";
 
 import { useUserStore } from "@/stores/userStore";
+import { useEnumsStore } from "@/stores/enumsStore";
 import { createNewUser, getAllUsers, updateUser, changePassword } from "@/api/user";
-import { getRolesEnum } from "@/api/enums";
 import { fetchCurrentUser } from "@/lib/userService";
 
 import { toast } from 'sonner';
@@ -23,7 +23,6 @@ import { Spinner } from "@/components/ui/spinner";
 import { Input } from "@/components/ui/Input";
 
 export default function Settings() {
-  const [rolesEnum, setRolesEnum] = React.useState<{ label: string; value: string }[]>([]);
   const [userList, setUserList] = React.useState<{ username: string, email: string, id: number, role: string, created_at: string, updated_at: string }[]>([]);
 
   const [createUserLoading, setCreateUserLoading] = React.useState(false);
@@ -35,6 +34,7 @@ export default function Settings() {
   const [changePasswordState, setChangePasswordState] = React.useState(false);
 
   const user = useUserStore();
+  const enums = useEnumsStore();
 
   const fetchUsers = async () => {
     const users = await getAllUsers();
@@ -42,12 +42,6 @@ export default function Settings() {
   }
   
   React.useEffect(() => {
-    const fetchRoles = async () => {
-      const roles = await getRolesEnum();
-      setRolesEnum(roles);
-    }
-
-    fetchRoles();
     fetchUsers();
   }, []);
 
@@ -226,7 +220,7 @@ export default function Settings() {
                         </SelectTrigger>
                         <SelectContent position="popper">
                           <SelectGroup>
-                            {rolesEnum.map((role) => (<SelectItem id={role.value} value={role.value}>{role.label}</SelectItem>))}
+                            {enums.roles?.map((role) => (<SelectItem id={role.value} value={role.value}>{role.label}</SelectItem>))}
                           </SelectGroup>
                         </SelectContent>
                       </Select>
@@ -307,7 +301,7 @@ export default function Settings() {
                         </SelectTrigger>
                         <SelectContent position="popper">
                           <SelectGroup>
-                            {rolesEnum.map((role) => (<SelectItem id={role.value} value={role.value}>{role.label}</SelectItem>))}
+                            {enums.roles?.map((role) => (<SelectItem id={role.value} value={role.value}>{role.label}</SelectItem>))}
                           </SelectGroup>
                         </SelectContent>
                       </Select>

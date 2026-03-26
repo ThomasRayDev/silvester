@@ -1,14 +1,22 @@
 import { Outlet, Navigate } from 'react-router-dom';
 import { Sidebar, Header } from '../components/layout';
 import { useAuthStore } from '../stores/authStore';
+import { useEnumsStore } from '@/stores/enumsStore';
 import { fetchCurrentUser } from '@/lib/userService';
 import React from 'react';
+import { getRolesEnum } from '@/api/enums';
 
 export default function MainLayout() {
     const isAuth = useAuthStore((state) => state.token) !== null
 
     React.useEffect(() => {
+      const fetchRoles = async () => {
+        const roles = await getRolesEnum();
+        useEnumsStore.getState().setRoles(roles);
+      }
+
       fetchCurrentUser();
+      fetchRoles();
     }, []);
 
     if (!isAuth) {
