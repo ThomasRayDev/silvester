@@ -262,11 +262,11 @@ export default function Settings() {
                 </Field>
                 <Field>
                   <FieldLabel className="text-xs">Создан</FieldLabel>
-                  <Input disabled value={watchedUser.created_at ? dayjs(watchedUser.created_at).tz('Europe/Moscow').format("DD.MM.YYYY HH:mm") : ""} />
+                  <Input disabled value={watchedUser.created_at ? dayjs.utc((watchedUser.created_at)).local().format("DD.MM.YYYY HH:mm") : ""} />
                 </Field>
                 <Field>
                   <FieldLabel className="text-xs">Обновлен</FieldLabel>
-                  <Input disabled value={watchedUser.updated_at ? dayjs(watchedUser.updated_at).tz('Europe/Moscow').format("DD.MM.YYYY HH:mm") : ""} />
+                  <Input disabled value={watchedUser.updated_at ? dayjs.utc((watchedUser.updated_at)).local().format("DD.MM.YYYY HH:mm") : ""} />
                 </Field>
               </div>
               <form onSubmit={editUserForm.handleSubmit(submitEditUser)}>
@@ -343,7 +343,7 @@ export default function Settings() {
             </div>
             <Button variant="secondary" onClick={() => { setChangePasswordState(!changePasswordState); changePasswordForm.reset(); }}>Изменить</Button>
           </div>
-          <p className="text-sm">Последнее изменение: {dayjs(user.userData?.password_updated).tz('Europe/Moscow').format('DD MMMM YYYY, HH:mm')}</p>
+          <p className="text-sm">Последнее изменение: {dayjs.utc((user.userData?.password_updated)).local().format('DD MMMM YYYY, HH:mm')}</p>
           {changePasswordState && <form className="w-1/2 flex flex-col gap-2" onSubmit={changePasswordForm.handleSubmit(submitChangePassword)}>
             <FormRow<ChangePasswordData> 
               name="currentPassword"
