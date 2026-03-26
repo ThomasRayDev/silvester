@@ -1,29 +1,40 @@
 import React from "react";
+import dayjs from 'dayjs';
+import 'dayjs/locale/ru';
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { adminCreateUserSchema, type AdminCreateUserData } from "@/schemas/adminCreateUserSchema";
 import { adminEditUserSchema, type AdminEditUserData } from "@/schemas/adminEditUserSchema";
+import { changePasswordSchema, type ChangePasswordData } from "@/schemas/changePasswordSchema";
+
 import { useUserStore } from "@/stores/userStore";
-import { createNewUser, getAllUsers, updateUser } from "@/api/user";
-import { getRolesEnum } from "@/api/enums";
+import { useEnumsStore } from "@/stores/enumsStore";
+import { createNewUser, getAllUsers, updateUser, changePassword } from "@/api/user";
+import { fetchCurrentUser } from "@/lib/userService";
 
 import { toast } from 'sonner';
 import { FormRow } from "@/components/layout/FormRow";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { SlidersHorizontal } from "lucide-react";
+import { Lock, Shield, SlidersHorizontal } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
 import { Input } from "@/components/ui/Input";
 
 export default function Settings() {
+  const [userList, setUserList] = React.useState<{ username: string, email: string, id: number, role: string, created_at: string, updated_at: string }[]>([]);
+
   const [createUserLoading, setCreateUserLoading] = React.useState(false);
   const [editUserLoading, setEditUserLoading] = React.useState(false);
+  const [changePasswordLoading, setChangePasswordLoading] = React.useState(false);
+
   const [selectedUserId, setSelectedUserId] = React.useState<string>("");
-  const [rolesEnum, setRolesEnum] = React.useState<{ label: string; value: string }[]>([]);
-  const [userList, setUserList] = React.useState<{ username: string, email: string, id: number, role: string, created_at: string, updated_at: string }[]>([]);
+
+  const [changePasswordState, setChangePasswordState] = React.useState(false);
+
   const user = useUserStore();
+  const enums = useEnumsStore();
 
   const fetchUsers = async () => {
     const users = await getAllUsers();
@@ -31,12 +42,6 @@ export default function Settings() {
   }
   
   React.useEffect(() => {
-    const fetchRoles = async () => {
-      const roles = await getRolesEnum();
-      setRolesEnum(roles);
-    }
-
-    fetchRoles();
     fetchUsers();
   }, []);
 
@@ -77,16 +82,24 @@ export default function Settings() {
   })
   const watchedUser = editUserForm.watch();
 
+  const changePasswordForm = useForm<ChangePasswordData>({
+    resolver: zodResolver(changePasswordSchema),
+    defaultValues: {
+      currentPassword: "",
+      newPassword: "",
+      repeatNewPassword: "",
+    }
+  })
+
   const submitCreateUser = async (data: AdminCreateUserData) => {
     setCreateUserLoading(true);
     try {
-      const response = await createNewUser({
+      await createNewUser({
         username: data.createUserUsername,
         email: data.createUserEmail,
         password: data.createUserPassword,
         role: data.createUserRole
       });
-      console.log(response);
       toast.success("Создание пользователя", { 
         description: `Пользователь ${data.createUserUsername} успешно создан`,
         position: "top-center",
@@ -106,8 +119,7 @@ export default function Settings() {
   const submitEditUser = async (data: AdminEditUserData) => {
     setEditUserLoading(true);
     try {
-      const response = await updateUser(data);
-      console.log(response);
+      await updateUser(data);
       toast.success("Редактирование пользователя", {
         description: `Пользователь ${data.username} успешно обновлен`,
         position: "top-center",
@@ -122,6 +134,38 @@ export default function Settings() {
       editUserForm.reset();
       setEditUserLoading(false);
       fetchUsers();
+    }
+  }
+
+  const submitChangePassword = async (data: ChangePasswordData) => {
+    if (data.newPassword !== data.repeatNewPassword) {
+      toast.error("Ошибка", {
+        description: "Пароли не совпадают, проверьте правильность введенного пароля",
+        position: "top-center",
+      })
+      return;
+    }
+    setChangePasswordLoading(true);
+    try {
+      await changePassword(data);
+      toast.success("Смена пароля", {
+        description: "Пароль успешно изменен",
+        position: "top-center",
+      })
+      changePasswordForm.reset();
+      setChangePasswordState(false);
+    } catch (error: any) {
+      let description = "Неверный пароль, проверьте правильность введенного пароля"
+      if (error.status != 403) {
+        description = "Что-то пошло не так, обратитесь к администратору"
+      }
+      toast.error("Ошибка", {
+        description,
+        position: "top-center",
+      })
+    } finally {
+      setChangePasswordLoading(false);
+      await fetchCurrentUser();
     }
   }
 
@@ -176,7 +220,7 @@ export default function Settings() {
                         </SelectTrigger>
                         <SelectContent position="popper">
                           <SelectGroup>
-                            {rolesEnum.map((role) => (<SelectItem id={role.value} value={role.value}>{role.label}</SelectItem>))}
+                            {enums.roles?.map((role) => (<SelectItem id={role.value} value={role.value}>{role.label}</SelectItem>))}
                           </SelectGroup>
                         </SelectContent>
                       </Select>
@@ -212,11 +256,11 @@ export default function Settings() {
                 </Field>
                 <Field>
                   <FieldLabel className="text-xs">Создан</FieldLabel>
-                  <Input disabled value={watchedUser.created_at} />
+                  <Input disabled value={watchedUser.created_at ? dayjs(watchedUser.created_at).locale('ru').format("DD.MM.YYYY HH:mm") : ""} />
                 </Field>
                 <Field>
                   <FieldLabel className="text-xs">Обновлен</FieldLabel>
-                  <Input disabled value={watchedUser.updated_at} />
+                  <Input disabled value={watchedUser.updated_at ? dayjs(watchedUser.updated_at).locale('ru').format("DD.MM.YYYY HH:mm") : ""} />
                 </Field>
               </div>
               <form onSubmit={editUserForm.handleSubmit(submitEditUser)}>
@@ -257,7 +301,7 @@ export default function Settings() {
                         </SelectTrigger>
                         <SelectContent position="popper">
                           <SelectGroup>
-                            {rolesEnum.map((role) => (<SelectItem id={role.value} value={role.value}>{role.label}</SelectItem>))}
+                            {enums.roles?.map((role) => (<SelectItem id={role.value} value={role.value}>{role.label}</SelectItem>))}
                           </SelectGroup>
                         </SelectContent>
                       </Select>
@@ -280,6 +324,46 @@ export default function Settings() {
           </div>
         </div>
       </div>}
+      <div className="mt-5 text-white w-full bg-[#0c1327] p-5 border-gray-800 border rounded-xl">
+        <div className="flex gap-3 items-center mb-6">
+          <Shield color="#00d5be" strokeWidth="2" size={28} />
+          <p className="font-semibold text-lg">Безопасность</p>
+        </div>
+        <div className="mx-20 flex flex-col gap-2 text-gray-400">
+          <div className="flex justify-between">
+            <div className="flex gap-3 items-center font-semibold">
+              <Lock color={"#99a1af"} />
+              <p className="text-white">Пароль</p>
+            </div>
+            <Button variant="secondary" onClick={() => { setChangePasswordState(!changePasswordState); changePasswordForm.reset(); }}>Изменить</Button>
+          </div>
+          <p className="text-sm">Последнее изменение: {dayjs(user.userData?.password_updated).locale('ru').format('DD MMMM YYYY, HH:mm')}</p>
+          {changePasswordState && <form className="w-1/2 flex flex-col gap-2" onSubmit={changePasswordForm.handleSubmit(submitChangePassword)}>
+            <FormRow<ChangePasswordData> 
+              name="currentPassword"
+              control={changePasswordForm.control}
+              label="Текущий пароль"
+              type="password"
+            />
+            <FormRow<ChangePasswordData> 
+              name="newPassword"
+              control={changePasswordForm.control}
+              label="Новый пароль"
+              type="password"
+            />
+            <FormRow<ChangePasswordData> 
+              name="repeatNewPassword"
+              control={changePasswordForm.control}
+              label="Новый пароль ещё раз"
+              type="password"
+            />
+            <Button variant="secondary" className="w-max" type="submit" disabled={changePasswordLoading}>
+              {changePasswordLoading && <Spinner data-icon="inline-start" />}
+              Сохранить
+            </Button>
+          </form>}
+        </div>
+      </div>
     </>
   );
 }

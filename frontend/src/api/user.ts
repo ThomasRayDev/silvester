@@ -24,3 +24,11 @@ export const updateUser = async (userData: any) => {
     });
     return data;
 }
+
+export const changePassword = async (userData: any) => {
+    const { data } = await api.post("/users/changePassword", {
+        old_password: userData.currentPassword,
+        new_password: userData.newPassword,
+    })
+    return data;
+}
