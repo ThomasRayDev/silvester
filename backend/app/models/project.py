@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 from datetime import datetime, timezone
 from app.db.database import Base
 from app.models.enums import ProjectStatus
-from utils.datetime import utcnow
+from app.utils.datetime import utcnow
 
 class Project(Base):
   __tablename__ = 'projects'

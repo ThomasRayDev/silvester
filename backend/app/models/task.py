@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 from datetime import datetime, timezone
 from app.db.database import Base
 from app.models.enums import TaskStatus, TaskPriority
-from utils.datetime import utcnow
+from app.utils.datetime import utcnow
 
 class Task(Base):
   __tablename__ = "tasks"

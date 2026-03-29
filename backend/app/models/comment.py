@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from datetime import datetime, timezone
 from app.db.database import Base
-from utils.datetime import utcnow
+from app.utils.datetime import utcnow
 
 class Comment(Base):
   __tablename__ = "comments"
