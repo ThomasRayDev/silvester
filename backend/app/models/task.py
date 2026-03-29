@@ -24,3 +24,4 @@ class Task(Base):
   author = relationship("User", back_populates="created_tasks", foreign_keys=[created_by])
   assignee = relationship("User", back_populates="assigned_tasks", foreign_keys=[assigned_to])
   comments = relationship("Comment", back_populates="task")
+  attachments = relationship("Attachment", back_populates="task")

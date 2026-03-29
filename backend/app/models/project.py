@@ -20,3 +20,4 @@ class Project(Base):
 
   author = relationship("User", back_populates="projects")
   tasks = relationship("Task", back_populates="project")
+  attachments = relationship("Attachment", back_populates="project")
