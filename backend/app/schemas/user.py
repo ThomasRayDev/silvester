@@ -10,9 +10,15 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
   password: str
   role: UserRole = UserRole.USER
+  firstname: str
+  secondname: str
+  position: str
 
 class UserUpdate(BaseModel):
   username: Optional[str] = None
+  firstname: Optional[str] = None
+  secondname: Optional[str] = None
+  position: Optional[str] = None
   email: Optional[str] = None
   password: Optional[str] = None
   role: Optional[UserRole] = None
@@ -23,6 +29,9 @@ class UserChangePassword(BaseModel):
 
 class UserOut(UserBase):
   id: int
+  firstname: str
+  secondname: str
+  position: str
   role: UserRole
   password_updated: datetime
   created_at: datetime

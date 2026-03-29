@@ -9,7 +9,10 @@ class User(Base):
   __tablename__ = "users"
 
   id = Column(Integer, primary_key=True, index=True)
-  username = Column(String, unique=True, nullable=True)
+  username = Column(String, unique=True, nullable=False)
+  firstname = Column(String, nullable=False)
+  secondname = Column(String, nullable=False)
+  position = Column(String, nullable=True)
   email = Column(String, unique=True, nullable=False)
   password_hash = Column(String, nullable=False)
   role = Column(Enum(UserRole, values_callable=lambda x: [e.value for e in x], name='userrole'), default=UserRole.USER)

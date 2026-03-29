@@ -68,6 +68,9 @@ def create_user(user: UserCreate, current_admin: User = Depends(require_admin), 
     email=user.email,
     password_hash=hash_password(user.password),
     role=user.role
+    firstname=user.firstname,
+    secondname=user.secondname,
+    position=user.position
   )
   db.add(db_user)
   db.commit()
