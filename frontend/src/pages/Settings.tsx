@@ -48,7 +48,9 @@ export default function Settings() {
   }
   
   React.useEffect(() => {
-    fetchUsers();
+    if (user.userData?.role === "admin") {
+      fetchUsers();
+    }
   }, []);
 
   React.useEffect(() => {
