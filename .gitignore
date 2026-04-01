@@ -29,6 +29,9 @@ ENV/
 *.db
 *.sqlite
 
+# Uploads (avatars, attachments)
+uploads/
+
 # Logs
 *.log
 

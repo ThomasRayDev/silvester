@@ -1,6 +1,7 @@
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
-from fastapi import HTTPException, Depends, APIRouter
+from fastapi import HTTPException, Depends, APIRouter, UploadFile, File
+from fastapi.responses import FileResponse
 from datetime import datetime, timezone
 from app.core.security import decode_access_token
 from app.core.config import settings
@@ -10,6 +11,14 @@ from app.db.database import get_db
 
 from app.models.user import User
 from app.schemas.user import UserOut, UserCreate, UserUpdate, UserChangePassword
+from app.storage.file_storage import (
+  ALLOWED_AVATAR_CONTENT_TYPES,
+  MAX_AVATAR_BYTES,
+  delete_stored,
+  new_avatar_key,
+  save_bytes,
+  resolve_stored_path,
+)
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.root_path}auth/login")
 router = APIRouter(prefix="/users", tags=["Users"])
@@ -50,6 +59,79 @@ def get_all_users(current_user: User = Depends(get_current_user), db: Session = 
 def read_current_user(current_user: User = Depends(get_current_user)):
   return current_user
 
+@router.post("/me/avatar", response_model=UserOut)
+async def upload_my_avatar(
+  file: UploadFile = File(...),
+  current_user: User = Depends(get_current_user),
+  db: Session = Depends(get_db),
+):
+  ct = file.content_type
+  if ct not in ALLOWED_AVATAR_CONTENT_TYPES:
+    raise HTTPException(status_code=400, detail="Unsupported image type (use JPEG, PNG or WebP)")
+
+  data = await file.read()
+  if len(data) > MAX_AVATAR_BYTES:
+    raise HTTPException(status_code=400, detail="File too large")
+
+  old_path = current_user.avatar_path
+  rel_key = new_avatar_key(current_user.id, ct)
+  save_bytes(rel_key, data)
+
+  current_user.avatar_path = rel_key
+  current_user.avatar_content_type = ct
+  current_user.updated_at = datetime.now(timezone.utc)
+
+  db.commit()
+  db.refresh(current_user)
+
+  delete_stored(old_path)
+  return current_user
+
+@router.delete("/me/avatar", response_model=UserOut)
+def delete_my_avatar(
+  current_user: User = Depends(get_current_user),
+  db: Session = Depends(get_db),
+):
+  old_path = current_user.avatar_path
+  current_user.avatar_path = None
+  current_user.avatar_content_type = None
+  current_user.updated_at = datetime.now(timezone.utc)
+  db.commit()
+  db.refresh(current_user)
+  delete_stored(old_path)
+  return current_user
+
+@router.get("/me/avatar")
+def get_my_avatar_file(current_user: User = Depends(get_current_user)):
+  if not current_user.avatar_path:
+    raise HTTPException(status_code=404, detail="Avatar not found")
+  path = resolve_stored_path(current_user.avatar_path)
+  if not path.is_file():
+    raise HTTPException(status_code=404, detail="Avatar file missing")
+  return FileResponse(
+    path=path,
+    media_type=current_user.avatar_content_type or "application/octet-stream",
+  )
+
+@router.get("/{user_id}/avatar")
+def get_user_avatar_file(
+  user_id: int,
+  current_user: User = Depends(get_current_user),
+  db: Session = Depends(get_db),
+):
+  user = db.query(User).filter(User.id == user_id).first()
+  if not user or not user.avatar_path:
+    raise HTTPException(status_code=404, detail="Avatar not found")
+
+  path = resolve_stored_path(user.avatar_path)
+  if not path.is_file():
+    raise HTTPException(status_code=404, detail="Avatar file missing")
+
+  return FileResponse(
+    path=path,
+    media_type=user.avatar_content_type or "application/octet-stream",
+  )
+
 @router.post("/", response_model=UserOut)
 def create_user(user: UserCreate, current_admin: User = Depends(require_admin), db: Session = Depends(get_db)):
   """Создание учетной записи пользователя администратором"""
@@ -67,7 +149,10 @@ def create_user(user: UserCreate, current_admin: User = Depends(require_admin), 
     username=user.username,
     email=user.email,
     password_hash=hash_password(user.password),
-    role=user.role
+    role=user.role,
+    firstname=user.firstname,
+    secondname=user.secondname,
+    position=user.position
   )
   db.add(db_user)
   db.commit()

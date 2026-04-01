@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 from datetime import datetime, timezone
 from app.db.database import Base
 from app.models.enums import TaskStatus, TaskPriority
+from app.utils.datetime import utcnow
 
 class Task(Base):
   __tablename__ = "tasks"
@@ -16,10 +17,11 @@ class Task(Base):
   created_by = Column(Integer, ForeignKey("users.id"))
   priority = Column(Enum(TaskPriority), default=TaskPriority.LOW)
   deadline = Column(DateTime)
-  created_at = Column(DateTime, default=datetime.now(timezone.utc))
-  updated_at = Column(DateTime, default=datetime.now(timezone.utc))
+  created_at = Column(DateTime, default=utcnow)
+  updated_at = Column(DateTime, default=utcnow, onupdate=utcnow)
 
   project = relationship("Project", back_populates="tasks")
   author = relationship("User", back_populates="created_tasks", foreign_keys=[created_by])
   assignee = relationship("User", back_populates="assigned_tasks", foreign_keys=[assigned_to])
   comments = relationship("Comment", back_populates="task")
+  attachments = relationship("Attachment", back_populates="task")
