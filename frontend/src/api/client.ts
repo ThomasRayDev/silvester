@@ -26,14 +26,11 @@ api.interceptors.response.use(
         if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
             try {
-                const refreshToken = Cookies.get("refresh_token");
-                if (refreshToken) {
-                    const response = await api.post("/auth/refresh", { refresh_token: refreshToken });
-                    const newAccessToken = response.data.access_token;
-                    useAuthStore.getState().setToken(newAccessToken);
-                    originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-                    return api(originalRequest);
-                }
+                const response = await api.post("/auth/refresh");
+                const newAccessToken = response.data.access_token;
+                useAuthStore.getState().setToken(newAccessToken);
+                originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+                return api(originalRequest);
             } catch (error) {
                 useAuthStore.getState().logout();
             }
