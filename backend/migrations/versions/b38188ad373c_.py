@@ -24,11 +24,11 @@ def upgrade() -> None:
     op.add_column('users', sa.Column('firstname', sa.String(), nullable=True))
     op.add_column('users', sa.Column('secondname', sa.String(), nullable=True))
     op.add_column('users', sa.Column('position', sa.String(), nullable=True))
-    op.execute("""
+    op.execute(sa.text("""
         UPDATE users
         SET firstname='Имя', secondname='Фамилия', position='Должность'
         WHERE firstname IS NULL
-    """)
+    """))
     op.alter_column('users', 'username',
                existing_type=sa.VARCHAR(),
                nullable=False)
