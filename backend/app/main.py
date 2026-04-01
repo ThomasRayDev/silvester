@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.db.database import Base, engine
 from app.core.config import settings
-from app.routers import user, auth, project, task, comment, enums
+from app.routers import user, auth, project, task, comment, enums, attachment
 
 app = FastAPI(title="Silvester backend", root_path=settings.root_path)
 
@@ -27,6 +27,7 @@ app.include_router(project.router)
 app.include_router(task.router)
 app.include_router(comment.router)
 app.include_router(enums.router)
+app.include_router(attachment.router)
 
 @app.get('/')
 def read_root():

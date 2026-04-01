@@ -5,6 +5,9 @@ class Settings(BaseSettings):
 
   root_path: str
 
+  """Каталог для загрузок (относительно рабочей директории процесса или абсолютный путь)."""
+  upload_dir: str = "uploads"
+
   secret_key: str
   algorithm: str = "HS256"
   access_token_expire_minutes: int = 60
