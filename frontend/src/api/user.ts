@@ -21,6 +21,9 @@ export const updateUser = async (userData: any) => {
         email: userData.email,
         password: userData.password,
         role: userData.role,
+        firstname: userData.firstname,
+        secondname: userData.secondname,
+        position: userData.position,
     });
     return data;
 }

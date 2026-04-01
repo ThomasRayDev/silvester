@@ -4,10 +4,11 @@ export interface UserData {
     username: string;
     email: string;
     id: number;
+    firstname: string;
+    secondname: string;
+    position: string;
     role: string;
     password_updated: string;
-    created_at: string;
-    updated_at: string;
 }
 
 interface UserState {
@@ -25,9 +26,10 @@ export const useUserStore = create<UserState>((set) => ({
                 email: data?.email,
                 id: data?.id,
                 role: data?.role,
+                firstname: data?.firstname,
+                secondname: data?.secondname,
+                position: data?.position,
                 password_updated: data?.password_updated,
-                created_at: data?.created_at,
-                updated_at: data?.updated_at,
             }
          });
     },

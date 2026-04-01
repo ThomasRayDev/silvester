@@ -29,7 +29,7 @@ export default function Settings() {
   dayjs.extend(timezone);
   dayjs.locale('ru');
 
-  const [userList, setUserList] = React.useState<{ username: string, email: string, id: number, role: string, created_at: string, updated_at: string }[]>([]);
+  const [userList, setUserList] = React.useState<{ username: string, email: string, id: number, role: string, created_at: string, updated_at: string, firstname: string, secondname: string, position: string }[]>([]);
 
   const [createUserLoading, setCreateUserLoading] = React.useState(false);
   const [editUserLoading, setEditUserLoading] = React.useState(false);
@@ -60,6 +60,9 @@ export default function Settings() {
       editUserForm.setValue("id", user.id);
       editUserForm.setValue("created_at", user.created_at);
       editUserForm.setValue("updated_at", user.updated_at);
+      editUserForm.setValue("firstname", user.firstname);
+      editUserForm.setValue("secondname", user.secondname);
+      editUserForm.setValue("position", user.position);
       editUserForm.clearErrors();
     }
   }, [selectedUserId]);
@@ -71,6 +74,9 @@ export default function Settings() {
         createUserEmail: "",
         createUserPassword: "",
         createUserRole: "",
+        createUserFirstname: "",
+        createUserSecondname: "",
+        createUserPosition: "",
     }
   })
 
@@ -84,6 +90,9 @@ export default function Settings() {
       id: "",
       created_at: "",
       updated_at: "",
+      firstname: "",
+      secondname: "",
+      position: "",
     }
   })
   const watchedUser = editUserForm.watch();
@@ -104,7 +113,10 @@ export default function Settings() {
         username: data.createUserUsername,
         email: data.createUserEmail,
         password: data.createUserPassword,
-        role: data.createUserRole
+        role: data.createUserRole,
+        firstname: data.createUserFirstname,
+        secondname: data.createUserSecondname,
+        position: data.createUserPosition,
       });
       toast.success("Создание пользователя", { 
         description: `Пользователь ${data.createUserUsername} успешно создан`,
@@ -188,32 +200,25 @@ export default function Settings() {
           <div>
             <p className="text-white mb-2">Создание пользователя</p>
             <form onSubmit={createUserForm.handleSubmit(submitCreateUser)}>
-              <div className="grid grid-cols-2 grid-rows-2 gap-4 text-gray-400 w-2/3">
-                <div className="flex flex-col gap-1">
-                  <FormRow<AdminCreateUserData> 
-                    name="createUserUsername"
-                    control={createUserForm.control}
-                    label="Имя пользователя"
-                    labelSize="xs"
-                  />
-                </div>
-                <div className="flex flex-col gap-1">
+              <div className="grid grid-cols-2 grid-rows-4 gap-4 text-gray-400 w-2/3">
+                <FormRow<AdminCreateUserData> 
+                  name="createUserUsername"
+                  control={createUserForm.control}
+                  label="Имя пользователя"
+                  labelSize="xs"
+                />
                 <FormRow<AdminCreateUserData> 
                     name="createUserEmail"
                     control={createUserForm.control}
                     label="Электронная почта"
                     labelSize="xs"
                   />
-                </div>
-                <div className="flex flex-col gap-1">
                 <FormRow<AdminCreateUserData> 
                     name="createUserPassword"
                     control={createUserForm.control}
                     label="Пароль"
                     labelSize="xs"
                   />
-                </div>
-                <div className="flex flex-col gap-1">
                 <Controller
                   name="createUserRole"
                   control={createUserForm.control}
@@ -234,7 +239,24 @@ export default function Settings() {
                     </Field>
                   )}
                 />
-                </div>
+                <FormRow<AdminCreateUserData> 
+                  name="createUserFirstname"
+                  control={createUserForm.control}
+                  label="Имя"
+                  labelSize="xs"
+                />
+                <FormRow<AdminCreateUserData> 
+                  name="createUserSecondname"
+                  control={createUserForm.control}
+                  label="Фамилия"
+                  labelSize="xs"
+                />
+                <FormRow<AdminCreateUserData> 
+                  name="createUserPosition"
+                  control={createUserForm.control}
+                  label="Должность"
+                  labelSize="xs"
+                />
               </div>
               <Button className="mt-3" variant="secondary" type="submit" disabled={createUserLoading}>
                 {createUserLoading && <Spinner data-icon="inline-start" />}
@@ -270,7 +292,7 @@ export default function Settings() {
                 </Field>
               </div>
               <form onSubmit={editUserForm.handleSubmit(submitEditUser)}>
-                <div className="text-gray-400 mt-4 grid grid-cols-2 grid-rows-2 gap-4">
+                <div className="text-gray-400 mt-4 grid grid-cols-2 grid-rows-4 gap-4">
                   <FormRow<AdminEditUserData> 
                     name="username"
                     control={editUserForm.control}
@@ -296,25 +318,49 @@ export default function Settings() {
                     labelSize="xs"
                   />
                   <Controller
-                  name="role"
-                  control={editUserForm.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name} className="text-xs">Роль</FieldLabel>
-                      <Select value={field.value} onValueChange={field.onChange}>
-                        <SelectTrigger id={field.name} aria-invalid={fieldState.invalid} className="w-full" disabled={!selectedUserId}>
-                          <SelectValue placeholder="Выберите роль..." />
-                        </SelectTrigger>
-                        <SelectContent position="popper">
-                          <SelectGroup>
-                            {enums.roles?.map((role) => (<SelectItem id={role.value} value={role.value}>{role.label}</SelectItem>))}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                    </Field>
-                  )}
-                />
+                    name="role"
+                    control={editUserForm.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel htmlFor={field.name} className="text-xs">Роль</FieldLabel>
+                        <Select value={field.value} onValueChange={field.onChange}>
+                          <SelectTrigger id={field.name} aria-invalid={fieldState.invalid} className="w-full" disabled={!selectedUserId}>
+                            <SelectValue placeholder="Выберите роль..." />
+                          </SelectTrigger>
+                          <SelectContent position="popper">
+                            <SelectGroup>
+                              {enums.roles?.map((role) => (<SelectItem id={role.value} value={role.value}>{role.label}</SelectItem>))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                        {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                      </Field>
+                    )}
+                  />
+                  <FormRow<AdminEditUserData> 
+                    name="firstname"
+                    control={editUserForm.control}
+                    label="Имя"
+                    value={watchedUser.firstname}
+                    disabled={!selectedUserId}
+                    labelSize="xs"
+                  />
+                  <FormRow<AdminEditUserData> 
+                    name="secondname"
+                    control={editUserForm.control}
+                    label="Фамилия"
+                    value={watchedUser.secondname}
+                    disabled={!selectedUserId}
+                    labelSize="xs"
+                  />
+                  <FormRow<AdminEditUserData> 
+                    name="position"
+                    control={editUserForm.control}
+                    label="Должность"
+                    value={watchedUser.position}
+                    disabled={!selectedUserId}
+                    labelSize="xs"
+                  />
                 </div>
                 <div className="mt-4 flex gap-2">
                   <Button variant="secondary" disabled={!selectedUserId || editUserLoading} type="submit">
