@@ -1,4 +1,6 @@
-import { Building2, Calendar, ChartLine, Users } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/Input";
+import { Building2, Calendar, ChartLine, Funnel, Plus, Users } from "lucide-react";
 
 export default function Projects() {
   return (
@@ -46,6 +48,17 @@ export default function Projects() {
           <p className="font-semibold text-3xl mt-4">173</p>
           <p className="text-gray-400 text-sm mt-1">Сотрудников</p>
         </div>
+      </div>
+      <div className="text-white w-full bg-[#0c1327] p-5 border-gray-800 border rounded-xl mt-6 flex items-center gap-2">
+        <Input className="h-10" placeholder="Поиск проектов..." />
+        <Button className="h-10" variant="secondary">
+          <Funnel />
+          Фильтры
+        </Button>
+        <Button className="h-10">
+          <Plus />
+          Новый проект
+        </Button>
       </div>
     </>
   );
