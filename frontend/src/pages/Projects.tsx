@@ -9,7 +9,7 @@ export default function Projects() {
         <div className="text-white w-full bg-[#0c1327] p-5 border-gray-800 border rounded-xl">
           <div className="flex items-center justify-between">
             <div className="bg-[#35d5c2]/10 w-max p-3 rounded-lg">
-              <Building2 color={"#35d5c2"} />
+              <Building2 className="text-primary" />
             </div>
             <p className="text-gray-400 text-xs">Всего</p>
           </div>
@@ -18,8 +18,8 @@ export default function Projects() {
         </div>
         <div className="text-white w-full bg-[#0c1327] p-5 border-gray-800 border rounded-xl">
           <div className="flex items-center justify-between">
-            <div className="bg-[#1bda1c]/10 w-max p-3 rounded-lg">
-              <ChartLine color={"#1bda1c"} />
+            <div className="bg-green-500/10 w-max p-3 rounded-lg">
+              <ChartLine className="text-green-500" />
             </div>
             <p className="text-gray-400 text-xs">Завершено</p>
           </div>
@@ -28,8 +28,8 @@ export default function Projects() {
         </div>
         <div className="text-white w-full bg-[#0c1327] p-5 border-gray-800 border rounded-xl">
           <div className="flex items-center justify-between">
-            <div className="bg-[#f89c0d]/10 w-max p-3 rounded-lg">
-              <Calendar color={"#f89c0d"} />
+            <div className="bg-orange-400/10 w-max p-3 rounded-lg">
+              <Calendar className="text-orange-400" />
             </div>
             <p className="text-gray-400 text-xs">Сроки</p>
           </div>
@@ -38,8 +38,8 @@ export default function Projects() {
         </div>
         <div className="text-white w-full bg-[#0c1327] p-5 border-gray-800 border rounded-xl">
           <div className="flex items-center justify-between">
-            <div className="bg-[#0d62f8]/10 w-max p-3 rounded-lg">
-              <Users color={"#0d62f8"} />
+            <div className="bg-blue-500/10 w-max p-3 rounded-lg">
+              <Users className="text-blue-500" />
             </div>
             <p className="text-gray-400 text-xs">Команда</p>
           </div>
