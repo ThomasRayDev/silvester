@@ -132,50 +132,41 @@ export default function ProjectCreate() {
                   </InputGroupAddon>
                 </InputGroup>
               </Field>
-              <Field>
-                <FieldLabel>Сроки</FieldLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="secondary"
-                      id="date-picker-range"
-                      className="justify-start px-2.5 font-normal bg-[#141e31] border-gray-600">
-                      <CalendarIcon />
-                      {date?.from ? (
-                        date.to ? (
-                          <>
-                            {dayjs(date.from).format('DD MMM, YYYY')} -{' '}
-                            {dayjs(date.to).format('DD MMM, YYYY')}
-                          </>
-                        ) : (
-                          dayjs(date.from).format('DD MMM, YYYY')
-                        )
-                      ) : (
-                        <span>Выберите даты</span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="range"
-                      defaultMonth={date?.from}
-                      selected={date}
-                      onSelect={setDate}
-                      numberOfMonths={2}
-                    />
-                  </PopoverContent>
-                </Popover>
-              </Field>
-              <Field>
-                <FieldLabel>Прогресс</FieldLabel>
-                <InputGroup className="bg-[#141e31] border-gray-600">
-                  <InputGroupInput />
-                  <InputGroupAddon align="inline-end">
-                    <Percent />
-                  </InputGroupAddon>
-                </InputGroup>
-              </Field>
             </div>
+            <Field>
+              <FieldLabel>Сроки</FieldLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="secondary"
+                    id="date-picker-range"
+                    className="justify-start px-2.5 font-normal bg-[#141e31] border-gray-600">
+                    <CalendarIcon />
+                    {date?.from ? (
+                      date.to ? (
+                        <>
+                          {dayjs(date.from).format('DD MMM, YYYY')} -{' '}
+                          {dayjs(date.to).format('DD MMM, YYYY')}
+                        </>
+                      ) : (
+                        dayjs(date.from).format('DD MMM, YYYY')
+                      )
+                    ) : (
+                      <span>Выберите даты</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="range"
+                    defaultMonth={date?.from}
+                    selected={date}
+                    onSelect={setDate}
+                    numberOfMonths={2}
+                  />
+                </PopoverContent>
+              </Popover>
+            </Field>
             <Field>
               <FieldLabel>Описание</FieldLabel>
               <Textarea className="resize-none" />
