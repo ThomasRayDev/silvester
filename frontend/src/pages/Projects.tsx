@@ -17,7 +17,7 @@ export default function Projects() {
             </div>
             <p className="text-slate-400 text-xs">Всего</p>
           </div>
-          <p className="font-semibold text-3xl mt-4">12</p>
+          <p className="font-semibold text-3xl mt-4">2</p>
           <p className="text-slate-400 text-sm mt-1">Активных проектов</p>
         </div>
         <div className="text-slate-100 w-full bg-[#0c1327] p-5 border-gray-800 border rounded-xl">
@@ -27,7 +27,7 @@ export default function Projects() {
             </div>
             <p className="text-slate-400 text-xs">Завершено</p>
           </div>
-          <p className="font-semibold text-3xl mt-4">68%</p>
+          <p className="font-semibold text-3xl mt-4">66%</p>
           <p className="text-slate-400 text-sm mt-1">Средний прогресс</p>
         </div>
         <div className="text-slate-100 w-full bg-[#0c1327] p-5 border-gray-800 border rounded-xl">
@@ -37,7 +37,7 @@ export default function Projects() {
             </div>
             <p className="text-slate-400 text-xs">Сроки</p>
           </div>
-          <p className="font-semibold text-3xl mt-4">3</p>
+          <p className="font-semibold text-3xl mt-4">2</p>
           <p className="text-slate-400 text-sm mt-1">Близко к дедлайну</p>
         </div>
         <div className="text-slate-100 w-full bg-[#0c1327] p-5 border-gray-800 border rounded-xl">
@@ -47,7 +47,7 @@ export default function Projects() {
             </div>
             <p className="text-slate-400 text-xs">Команда</p>
           </div>
-          <p className="font-semibold text-3xl mt-4">173</p>
+          <p className="font-semibold text-3xl mt-4">0</p>
           <p className="text-slate-400 text-sm mt-1">Сотрудников</p>
         </div>
       </div>
@@ -66,7 +66,12 @@ export default function Projects() {
         <div className="text-slate-100 w-full bg-[#0c1327] border-gray-800 border rounded-xl">
           <div className="h-40 rounded-lg" />
           <div className="p-6 flex flex-col justify-center gap-3">
-            <h2 className="font-semibold text-xl">ЖК "Северная звезда"</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="font-semibold text-xl">ЖК "Северная звезда"</h2>
+              <div className="text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary">
+                В процессе
+              </div>
+            </div>
             <p className="text-sm text-slate-400">г. Москва, ул. Ленинградская</p>
             <div>
               <div className="mb-2 flex justify-between items-center">
@@ -95,7 +100,12 @@ export default function Projects() {
         <div className="text-slate-100 w-full bg-[#0c1327] border-gray-800 border rounded-xl">
           <div className="h-40 rounded-lg" />
           <div className="p-6 flex flex-col justify-center gap-3">
-            <h2 className="font-semibold text-xl">ЖК "Северная звезда"</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="font-semibold text-xl">ЖК "Северная звезда"</h2>
+              <div className="text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary">
+                В процессе
+              </div>
+            </div>
             <p className="text-sm text-slate-400">г. Москва, ул. Ленинградская</p>
             <div>
               <div className="mb-2 flex justify-between items-center">
