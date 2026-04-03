@@ -191,18 +191,18 @@ export default function Settings() {
 
   return (
     <>
-      <h1 className="text-white text-3xl font-bold">Настройки</h1>
-      <p className="text-gray-400 my-3">Управление профилем и параметрами системы</p>
-      {user.userData?.role === "admin" && <div className="mt-5 text-white w-full bg-[#0c1327] p-5 border-gray-800 border rounded-xl">
+      <h1 className="text-slate-100 text-3xl font-bold">Настройки</h1>
+      <p className="text-slate-400 my-3">Управление профилем и параметрами системы</p>
+      {user.userData?.role === "admin" && <div className="mt-5 text-slate-100 w-full bg-[#0c1327] p-5 border-gray-800 border rounded-xl">
         <div className="flex gap-3 items-center mb-3">
           <SlidersHorizontal color="#00d5be" strokeWidth="2" size={28} />
           <p className="font-semibold text-lg">Управление системой</p>
         </div>
         <div className="flex flex-col gap-4">
           <div>
-            <p className="text-white mb-2">Создание пользователя</p>
+            <p className="text-slate-100 mb-2">Создание пользователя</p>
             <form onSubmit={createUserForm.handleSubmit(submitCreateUser)}>
-              <div className="grid grid-cols-2 grid-rows-4 gap-4 text-gray-400 w-2/3">
+              <div className="grid grid-cols-2 grid-rows-4 gap-4 text-slate-400 w-2/3">
                 <FormRow<AdminCreateUserData> 
                   name="createUserUsername"
                   control={createUserForm.control}
@@ -267,7 +267,7 @@ export default function Settings() {
             </form>
           </div>
           <div>
-            <p className="text-white mb-2">Редактирование пользователя</p>
+            <p className="text-slate-100 mb-2">Редактирование пользователя</p>
             <div className="w-2/3">
               <Select value={selectedUserId} onValueChange={(value) => setSelectedUserId(value)}>
                 <SelectTrigger className="mt-3 w-1/3">
@@ -279,7 +279,7 @@ export default function Settings() {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-              <div className="text-gray-400 mt-4 grid grid-cols-2 grid-rows-2 gap-4">
+              <div className="text-slate-400 mt-4 grid grid-cols-2 grid-rows-2 gap-4">
                 <Field>
                   <FieldLabel className="text-xs">ID</FieldLabel>
                   <Input disabled value={watchedUser.id} />
@@ -294,7 +294,7 @@ export default function Settings() {
                 </Field>
               </div>
               <form onSubmit={editUserForm.handleSubmit(submitEditUser)}>
-                <div className="text-gray-400 mt-4 grid grid-cols-2 grid-rows-4 gap-4">
+                <div className="text-slate-400 mt-4 grid grid-cols-2 grid-rows-4 gap-4">
                   <FormRow<AdminEditUserData> 
                     name="username"
                     control={editUserForm.control}
@@ -378,16 +378,16 @@ export default function Settings() {
           </div>
         </div>
       </div>}
-      <div className="mt-5 text-white w-full bg-[#0c1327] p-5 border-gray-800 border rounded-xl">
+      <div className="mt-5 text-slate-100 w-full bg-[#0c1327] p-5 border-gray-800 border rounded-xl">
         <div className="flex gap-3 items-center mb-6">
           <Shield color="#00d5be" strokeWidth="2" size={28} />
           <p className="font-semibold text-lg">Безопасность</p>
         </div>
-        <div className="mx-20 flex flex-col gap-2 text-gray-400">
+        <div className="mx-20 flex flex-col gap-2 text-slate-400">
           <div className="flex justify-between">
             <div className="flex gap-3 items-center font-semibold">
               <Lock color={"#99a1af"} />
-              <p className="text-white">Пароль</p>
+              <p className="text-slate-100">Пароль</p>
             </div>
             <Button variant="secondary" onClick={() => { setChangePasswordState(!changePasswordState); changePasswordForm.reset(); }}>Изменить</Button>
           </div>
