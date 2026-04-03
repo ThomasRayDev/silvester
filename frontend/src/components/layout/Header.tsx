@@ -13,7 +13,7 @@ export default function Header() {
           <p className="font-semibold text-right">
             {user.userData?.firstname} {user.userData?.secondname}
           </p>
-          <p className="text-gray-400 text-xs text-right">{user.userData?.position}</p>
+          <p className="text-slate-400 text-xs text-right">{user.userData?.position}</p>
         </div>
         <Avatar size="lg">
           <AvatarImage />

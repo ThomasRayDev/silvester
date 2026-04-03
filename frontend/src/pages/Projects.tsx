@@ -6,9 +6,11 @@ import { Input } from '@/components/ui/Input';
 import { Building2, Calendar, ChartLine, Funnel, Plus, Users } from 'lucide-react';
 import { getProjects, type ProjectType } from '@/api/project';
 import Project from '@/components/layout/Project';
+import { useUserStore } from '@/stores/userStore';
 
 export default function Projects() {
   const navigate = useNavigate();
+  const user = useUserStore();
 
   const [projects, setProjects] = React.useState<ProjectType[]>([]);
 
@@ -83,10 +85,12 @@ export default function Projects() {
           <Funnel />
           Фильтры
         </Button>
-        <Button className="h-10" onClick={() => navigate('/projects/create')}>
-          <Plus />
-          Новый проект
-        </Button>
+        {(user.userData?.role === 'admin' || user.userData?.role === 'manager') && (
+          <Button className="h-10" onClick={() => navigate('/projects/create')}>
+            <Plus />
+            Новый проект
+          </Button>
+        )}
       </div>
       <div className="mt-6 grid grid-cols-2 gap-6">
         {projects.map((project) => (

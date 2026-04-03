@@ -12,7 +12,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 import type { DateRange } from 'react-day-picker';
@@ -22,8 +21,18 @@ import 'dayjs/locale/ru';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { getAllUsers, type User } from '@/api/user';
+import EmployeeCard from '@/components/layout/EmployeeCard';
 
 export default function ProjectCreate() {
+  const navigate = useNavigate();
+
   dayjs.extend(utc);
   dayjs.extend(timezone);
   dayjs.locale('ru');
@@ -32,7 +41,38 @@ export default function ProjectCreate() {
     from: dayjs().startOf('year').add(19, 'day').toDate(),
     to: dayjs().startOf('year').add(39, 'day').toDate(),
   });
-  const navigate = useNavigate();
+  const [userList, setUserList] = React.useState<User[]>([]);
+  const [availableUsers, setAvailableUsers] = React.useState<User[]>([]);
+  const [addedUsers, setAddedUsers] = React.useState<User[]>([]);
+
+  React.useEffect(() => {
+    const fetchUsers = async () => {
+      const users = await getAllUsers();
+      setUserList(users);
+      setAvailableUsers(users);
+    };
+
+    fetchUsers();
+  }, []);
+
+  const addUser = (userId: number) => {
+    if (addedUsers.find((user) => user.id === userId)) {
+      return console.log('User already added');
+    }
+    const foundUser = userList.find((user) => user.id === userId);
+    if (foundUser) {
+      setAddedUsers((prev) => [...prev, foundUser]);
+      setAvailableUsers((prev) => prev.filter((user) => user.id !== userId));
+    }
+  };
+
+  const removeUser = (userId: number) => {
+    const foundUser = userList.find((user) => user.id === userId);
+    if (foundUser) {
+      setAddedUsers((prev) => prev.filter((user) => user.id !== userId));
+      setAvailableUsers((prev) => [...prev, foundUser]);
+    }
+  };
 
   return (
     <>
@@ -77,8 +117,8 @@ export default function ProjectCreate() {
                   <SelectContent position="popper">
                     <SelectGroup>
                       <SelectItem value="new">Новый</SelectItem>
-                      <SelectItem value="new">В процессе</SelectItem>
-                      <SelectItem value="new">Завершен</SelectItem>
+                      <SelectItem value="in_progress">В процессе</SelectItem>
+                      <SelectItem value="completed">Завершен</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -144,34 +184,50 @@ export default function ProjectCreate() {
               <FieldLabel>Сотрудники</FieldLabel>
               <div className="border border-gray-600 p-2 rounded-lg border-dotted flex justify-between items-center">
                 <div className="flex gap-2 flex-wrap">
-                  <div className="flex items-center gap-3 p-3 w-max bg-[#141e31] border border-gray-600 rounded-lg">
-                    <Avatar>
-                      <AvatarImage />
-                      <AvatarFallback>АИ</AvatarFallback>
-                    </Avatar>
-                    <div className="w-max">
-                      <p>Артём Ильченко</p>
-                      <p className="text-slate-400 text-xs">Администратор</p>
-                    </div>
-                    <Button variant="ghost">
-                      <X />
-                    </Button>
-                  </div>
+                  {addedUsers.map((user) => (
+                    <EmployeeCard
+                      key={user.id}
+                      firstname={user.firstname}
+                      secondname={user.secondname}
+                      position={user.position}
+                      onClickRemove={() => removeUser(user.id)}
+                    />
+                  ))}
                 </div>
-                <Button variant="ghost">
+                <Button
+                  variant="ghost"
+                  onClick={() => {
+                    setAddedUsers([]);
+                    setAvailableUsers(userList);
+                  }}>
                   <X />
                 </Button>
               </div>
             </Field>
-            <Button variant="secondary" className="w-max">
-              <Plus />
-              Добавить сотрудника
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="secondary" className="w-max">
+                  <Plus />
+                  Добавить сотрудника
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-max">
+                {availableUsers.map((user) => (
+                  <DropdownMenuItem key={user.id} onClick={() => addUser(user.id)}>
+                    {user.firstname} {user.secondname} - {user.position}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           <div className="mt-4 pt-4 flex gap-3 border-gray-800 border-t">
-            <Button>Сохранить</Button>
-            <Button variant="secondary">Отменить</Button>
-            <Button variant="destructive">Удалить</Button>
+            <Button disabled>Сохранить</Button>
+            <Button variant="secondary" disabled>
+              Отменить
+            </Button>
+            <Button variant="destructive" disabled>
+              Удалить
+            </Button>
           </div>
         </div>
         <div className="mt-5 text-slate-100 w-1/3 bg-[#0c1327] p-5 border-gray-800 border rounded-xl"></div>
