@@ -1,5 +1,15 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { Dashboard, Projects, Tasks, Requests, Reports, History, Settings, Login } from './pages';
+import {
+  Dashboard,
+  Projects,
+  Tasks,
+  Requests,
+  Reports,
+  History,
+  Settings,
+  Login,
+  ProjectCreate,
+} from './pages';
 import MainLayout from './layouts/MainLayout';
 import LoginLayout from './layouts/LoginLayout';
 
@@ -10,6 +20,7 @@ function App() {
       <Route element={<MainLayout />}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/projects" element={<Projects />} />
+        <Route path="/projects/create" element={<ProjectCreate />} />
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/requests" element={<Requests />} />
         <Route path="/reports" element={<Reports />} />
@@ -20,7 +31,7 @@ function App() {
         <Route path="/login" element={<Login />} />
       </Route>
     </Routes>
-  )
+  );
 }
 
-export default App
+export default App;

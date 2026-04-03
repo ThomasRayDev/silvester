@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/Input';
@@ -7,6 +8,8 @@ import { getProjects, type ProjectType } from '@/api/project';
 import Project from '@/components/layout/Project';
 
 export default function Projects() {
+  const navigate = useNavigate();
+
   const [projects, setProjects] = React.useState<ProjectType[]>([]);
 
   const averageProgress =
@@ -80,7 +83,7 @@ export default function Projects() {
           <Funnel />
           Фильтры
         </Button>
-        <Button className="h-10">
+        <Button className="h-10" onClick={() => navigate('/projects/create')}>
           <Plus />
           Новый проект
         </Button>
