@@ -9,6 +9,16 @@ import Project from '@/components/layout/Project';
 export default function Projects() {
   const [projects, setProjects] = React.useState<ProjectType[]>([]);
 
+  const averageProgress =
+    projects.length > 0 ? projects.reduce((sum, p) => sum + p.progress, 0) / projects.length : 0;
+
+  const uniqueEmployees = new Map();
+  projects.forEach((project) => {
+    project.team.forEach((user) => {
+      uniqueEmployees.set(user.id, user);
+    });
+  });
+
   React.useEffect(() => {
     const fetchProjects = async () => {
       const _projects = await getProjects();
@@ -40,7 +50,7 @@ export default function Projects() {
             </div>
             <p className="text-slate-400 text-xs">Завершено</p>
           </div>
-          <p className="font-semibold text-3xl mt-4">0%</p>
+          <p className="font-semibold text-3xl mt-4">{averageProgress}%</p>
           <p className="text-slate-400 text-sm mt-1">Средний прогресс</p>
         </div>
         <div className="text-slate-100 w-full bg-[#0c1327] p-5 border-gray-800 border rounded-xl">
@@ -60,7 +70,7 @@ export default function Projects() {
             </div>
             <p className="text-slate-400 text-xs">Команда</p>
           </div>
-          <p className="font-semibold text-3xl mt-4">0</p>
+          <p className="font-semibold text-3xl mt-4">{uniqueEmployees.size}</p>
           <p className="text-slate-400 text-sm mt-1">Сотрудников</p>
         </div>
       </div>
@@ -77,7 +87,15 @@ export default function Projects() {
       </div>
       <div className="mt-6 grid grid-cols-2 gap-6">
         {projects.map((project) => (
-          <Project title={project.name} status={project.status} />
+          <Project
+            title={project.name}
+            status={project.status}
+            budget={project.budget}
+            deadline={project.end_date}
+            teamCount={project.team.length}
+            progress={project.progress}
+            address={project.address}
+          />
         ))}
       </div>
     </>
