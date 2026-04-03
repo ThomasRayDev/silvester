@@ -13,7 +13,6 @@ export default function Projects() {
     const fetchProjects = async () => {
       const _projects = await getProjects();
       setProjects(_projects);
-      console.log(_projects);
     };
 
     fetchProjects();
