@@ -26,3 +26,9 @@ class User(Base):
   created_tasks = relationship("Task", back_populates="author", foreign_keys="[Task.created_by]")
   assigned_tasks = relationship("Task", back_populates="assignee", foreign_keys="[Task.assigned_to]")
   comments = relationship("Comment", back_populates="author")
+
+  projects_in_team = relationship(
+    "Project",
+    secondary="project_members",
+    back_populates="team"
+  )

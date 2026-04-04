@@ -4,34 +4,40 @@ import { useAuthStore } from '../stores/authStore';
 import { useEnumsStore } from '@/stores/enumsStore';
 import { fetchCurrentUser } from '@/lib/userService';
 import React from 'react';
-import { getRolesEnum } from '@/api/enums';
+import { getProjectStatutesEnum, getRolesEnum } from '@/api/enums';
 
 export default function MainLayout() {
-    const isAuth = useAuthStore((state) => state.token) !== null
+  const isAuth = useAuthStore((state) => state.token) !== null;
 
-    React.useEffect(() => {
-      const fetchRoles = async () => {
-        const roles = await getRolesEnum();
-        useEnumsStore.getState().setRoles(roles);
-      }
+  React.useEffect(() => {
+    const fetchRoles = async () => {
+      const roles = await getRolesEnum();
+      useEnumsStore.getState().setRoles(roles);
+    };
 
-      fetchCurrentUser();
-      fetchRoles();
-    }, []);
+    const fetchProjectStatuses = async () => {
+      const projectStatuses = await getProjectStatutesEnum();
+      useEnumsStore.getState().setProjectStatuses(projectStatuses);
+    };
 
-    if (!isAuth) {
-      return <Navigate to="/login" replace />
-    }
+    fetchCurrentUser();
+    fetchRoles();
+    fetchProjectStatuses();
+  }, []);
 
-    return (
+  if (!isAuth) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return (
     <div className="min-h-screen bg-[#020618] flex">
       <Sidebar />
       <div className="w-full ml-72">
         <Header />
         <main className="p-6 mt-20">
-            <Outlet />
+          <Outlet />
         </main>
       </div>
     </div>
-    )
+  );
 }
