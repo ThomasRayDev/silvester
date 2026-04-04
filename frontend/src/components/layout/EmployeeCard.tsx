@@ -30,7 +30,7 @@ export default function EmployeeCard({
         </p>
         <p className="text-slate-400 text-xs">{position}</p>
       </div>
-      <Button variant="ghost" onClick={onClickRemove}>
+      <Button variant="ghost" onClick={onClickRemove} type="button">
         <X />
       </Button>
     </div>
