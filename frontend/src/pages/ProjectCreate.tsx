@@ -352,6 +352,7 @@ export default function ProjectCreate() {
                   </div>
                   <Button
                     variant="ghost"
+                    type="button"
                     onClick={() => {
                       setAddedUsers([]);
                       setAvailableUsers(userList);
@@ -362,7 +363,7 @@ export default function ProjectCreate() {
               </Field>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="secondary" className="w-max">
+                  <Button variant="secondary" className="w-max" type="button">
                     <Plus />
                     Добавить сотрудника
                   </Button>
