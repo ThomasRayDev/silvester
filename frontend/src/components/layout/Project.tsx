@@ -8,7 +8,7 @@ import { Separator } from '../ui/separator';
 import { useEnumsStore } from '@/stores/enumsStore';
 import { type Address } from '@/api/project';
 
-import { formatMoney } from '@/lib/utils';
+import { formatAddress, formatMoney } from '@/lib/utils';
 
 type ProjectProps = {
   title: string;
@@ -45,7 +45,7 @@ export default function Project({
             {enums.projectStatuses?.find((s) => s.value === status)?.label ?? status}
           </div>
         </div>
-        <p className="text-sm text-slate-400">{`${address.city}, ${address.street}, ${address.house}${address.apartment ? `, кв. ${address.apartment}` : ''}`}</p>
+        <p className="text-sm text-slate-400">{formatAddress(address)}</p>
         <div>
           <div className="mb-2 flex justify-between items-center">
             <p className="text-gray-300 text-sm">Прогресс</p>
