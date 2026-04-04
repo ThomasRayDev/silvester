@@ -6,15 +6,15 @@ from app.models.enums import ProjectStatus
 from app.schemas.user import UserOut
 
 class Address(BaseModel):
-  city: str
-  street: str
-  house: str
+  city: Optional[str] = None
+  street: Optional[str] = None
+  house: Optional[str] = None
   apartment: Optional[str] = None
 
 class ProjectBase(BaseModel):
   name: str
   description: str
-  address: Address
+  address: Optional[Address] = None
   budget: int
   team: Optional[List[int]] = Field(default_factory=list)
   start_date: datetime
