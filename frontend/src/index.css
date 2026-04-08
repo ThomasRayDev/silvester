@@ -7,7 +7,7 @@
 
 :root {
   --background: oklch(0.1298 0.0425 265.13);
-  --foreground: oklch(0.145 0 0);
+  --foreground: oklch(1 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(0.1919 0.042 267.79);
@@ -16,12 +16,12 @@
   --primary-foreground: oklch(0 0 0);
   --secondary: oklch(0.2784 0.0335 257.67);
   --secondary-foreground: oklch(0.9276 0.0058 264.53);
-  --muted: oklch(0.97 0 0);
+  --muted: oklch(0.2448 0.0425 265.13);
   --muted-foreground: oklch(0.556 0 0);
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
+  --border: oklch(27.8% 0.033 256.848);
   --input: oklch(0.2358 0.0396 262.54);
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.809 0.105 251.813);
