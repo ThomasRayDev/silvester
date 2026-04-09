@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Response, Request
+from fastapi import APIRouter, Depends, HTTPException, Response, Request, status
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
 
@@ -42,3 +42,7 @@ def refresh_token(request: Request):
     raise HTTPException(401, "Invalid refresh token")
   new_access = create_access_token(data={ "sub": username })
   return { "access_token": new_access, "token_type": "bearer" }
+
+@router.post('/logout', status_code=status.HTTP_204_NO_CONTENT)
+def logout(response: Response):
+  response.delete_cookie("refresh_token")
