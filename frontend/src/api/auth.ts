@@ -1,16 +1,20 @@
-import api from "./client";
+import api from './client';
 
 export const loginRequest = async (username: string, password: string) => {
-    const params = new URLSearchParams();
+  const params = new URLSearchParams();
 
-    params.append("username", username);
-    params.append("password", password);
+  params.append('username', username);
+  params.append('password', password);
 
-    const { data } = await api.post("/auth/login", params, {
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-        },
-    });
+  const { data } = await api.post('/auth/login', params, {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  });
 
-    return data;
-}
+  return data;
+};
+
+export const logoutRequest = async () => {
+  await api.post('/auth/logout');
+};
