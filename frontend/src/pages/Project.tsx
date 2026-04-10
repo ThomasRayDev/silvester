@@ -2,7 +2,16 @@ import { TaskElement } from '@/components/layout';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { ArrowLeft, Calendar, ChartLine, DollarSign, Dot, MapPin, Users } from 'lucide-react';
+import {
+  ArrowLeft,
+  Calendar,
+  Camera,
+  ChartLine,
+  DollarSign,
+  MapPin,
+  Pencil,
+  Users,
+} from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function Project() {
@@ -22,7 +31,12 @@ export default function Project() {
         <div className="text-slate-100 w-full bg-[#0c1327] p-5 border-gray-800 border rounded-xl">
           <div className="flex justify-between">
             <div className="flex flex-col gap-3">
-              <h2 className="font-semibold text-2xl">ЖК "Северная звезда"</h2>
+              <div className="flex items-center gap-3">
+                <Button>
+                  <Pencil />
+                </Button>
+                <h2 className="font-semibold text-2xl">ЖК "Северная звезда"</h2>
+              </div>
               <div className="text-slate-400 flex gap-2 items-center">
                 <MapPin size={16} />
                 <p className="text-sm">г. Москва, ул. Ленинградская, д. 125</p>
@@ -130,6 +144,17 @@ export default function Project() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+        <div className="text-slate-100 w-full bg-[#0c1327] p-5 border-gray-800 border rounded-xl">
+          <div className="flex items-center gap-3">
+            <Camera className="text-primary" />
+            <p className="font-semibold text-lg">Фотоотчёты с объекта</p>
+          </div>
+          <div className="mt-5 grid grid-cols-3 gap-3">
+            <div className="bg-slate-700 rounded-lg h-70"></div>
+            <div className="bg-slate-700 rounded-lg h-70"></div>
+            <div className="bg-slate-700 rounded-lg h-70"></div>
           </div>
         </div>
       </div>
