@@ -9,6 +9,7 @@ import { useEnumsStore } from '@/stores/enumsStore';
 import { type Address } from '@/api/project';
 
 import { formatAddress, formatMoney } from '@/lib/utils';
+import { Link } from 'react-router-dom';
 
 type ProjectCardProps = {
   title: string;
@@ -18,6 +19,7 @@ type ProjectCardProps = {
   teamCount: number;
   progress: number;
   address: Address;
+  projectId: number;
 };
 
 export default function ProjectCard({
@@ -28,6 +30,7 @@ export default function ProjectCard({
   teamCount,
   progress,
   address,
+  projectId,
 }: ProjectCardProps) {
   const enums = useEnumsStore();
 
@@ -40,7 +43,11 @@ export default function ProjectCard({
       <div className="h-40 rounded-lg" />
       <div className="p-6 flex flex-col justify-center gap-3">
         <div className="flex items-center justify-between">
-          <h2 className="font-semibold text-xl">{title}</h2>
+          <Link
+            to={`/projects/${projectId}`}
+            className="font-semibold text-xl cursor-pointer hover:underline">
+            {title}
+          </Link>
           <div className="text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary">
             {enums.projectStatuses?.find((s) => s.value === status)?.label ?? status}
           </div>

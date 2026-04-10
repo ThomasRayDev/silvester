@@ -102,6 +102,7 @@ export default function Projects() {
             teamCount={project.team.length}
             progress={project.progress}
             address={project.address}
+            projectId={1}
           />
         ))}
       </div>

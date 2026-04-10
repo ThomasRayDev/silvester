@@ -1,12 +1,19 @@
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { ArrowLeft, Calendar, ChartLine, DollarSign, MapPin, Users } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Project() {
+  const navigate = useNavigate();
+
   return (
     <>
+      <title>ЖК "Северная звезда"</title>
       <div className="flex flex-col gap-4">
-        <Button variant="link" className="text-slate-400 w-max">
+        <Button
+          variant="link"
+          className="text-slate-400 w-max"
+          onClick={() => navigate('/projects')}>
           <ArrowLeft />
           Назад к проектам
         </Button>
