@@ -1,7 +1,4 @@
-import dayjs from 'dayjs';
-import 'dayjs/locale/ru';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
+import dayjs from '@/lib/dayjs-config';
 
 import { Progress } from '../../ui/progress';
 import { Separator } from '../../ui/separator';
@@ -33,10 +30,6 @@ export default function ProjectCard({
   projectId,
 }: ProjectCardProps) {
   const enums = useEnumsStore();
-
-  dayjs.extend(utc);
-  dayjs.extend(timezone);
-  dayjs.locale('ru');
 
   return (
     <div className="text-slate-100 w-full bg-[#0c1327] border-gray-800 border rounded-xl">

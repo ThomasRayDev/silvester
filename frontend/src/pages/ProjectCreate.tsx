@@ -17,10 +17,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Calendar } from '@/components/ui/calendar';
 import type { DateRange } from 'react-day-picker';
 import React from 'react';
-import dayjs from 'dayjs';
-import 'dayjs/locale/ru';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
+import dayjs from '@/lib/dayjs-config';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
 import {
   DropdownMenu,
@@ -41,10 +38,6 @@ import { toast } from 'sonner';
 export default function ProjectCreate() {
   const navigate = useNavigate();
   const enums = useEnumsStore();
-
-  dayjs.extend(utc);
-  dayjs.extend(timezone);
-  dayjs.locale('ru');
 
   const form = useForm<СreateProjectData>({
     resolver: zodResolver(createProjectSchema),
