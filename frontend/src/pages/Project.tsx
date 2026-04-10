@@ -1,6 +1,8 @@
+import { TaskElement } from '@/components/layout';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { ArrowLeft, Calendar, ChartLine, DollarSign, MapPin, Users } from 'lucide-react';
+import { ArrowLeft, Calendar, ChartLine, DollarSign, Dot, MapPin, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function Project() {
@@ -9,7 +11,7 @@ export default function Project() {
   return (
     <>
       <title>ЖК "Северная звезда"</title>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-6">
         <Button
           variant="link"
           className="text-slate-400 w-max"
@@ -43,7 +45,7 @@ export default function Project() {
             <Progress className="h-3 bg-slate-700" value={85} />
           </div>
         </div>
-        <div className="mt-5 flex justify-between gap-5">
+        <div className="flex justify-between gap-5">
           <div className="text-slate-100 w-full bg-[#0c1327] p-5 border-gray-800 border rounded-xl">
             <div className="flex items-center gap-4">
               <div className="bg-[#35d5c2]/10 w-max p-3 rounded-lg">
@@ -83,6 +85,51 @@ export default function Project() {
             </div>
             <p className="font-semibold text-2xl mt-4">142</p>
             <p className="text-slate-400 text-sm mt-1">Из 167 задач</p>
+          </div>
+        </div>
+        <div className="flex justify-between gap-5">
+          <div className="text-slate-100 w-2/3 bg-[#0c1327] p-5 border-gray-800 border rounded-xl">
+            <p className="font-semibold text-lg">Активные задачи</p>
+            <div className="p-6 flex flex-col gap-10">
+              <TaskElement />
+              <TaskElement />
+              <TaskElement />
+            </div>
+          </div>
+          <div className="text-slate-100 w-1/3 bg-[#0c1327] p-5 border-gray-800 border rounded-xl">
+            <p className="font-semibold text-lg">Команда проекта</p>
+            <div className="p-6 flex flex-col gap-10">
+              <div className="flex items-center gap-4">
+                <Avatar size="lg">
+                  <AvatarImage />
+                  <AvatarFallback>АИ</AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="font-semibold">Артём Ильченко</p>
+                  <p className="text-xs text-slate-400">Администратор</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4">
+                <Avatar size="lg">
+                  <AvatarImage />
+                  <AvatarFallback>АИ</AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="font-semibold">Артём Ильченко</p>
+                  <p className="text-xs text-slate-400">Администратор</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4">
+                <Avatar size="lg">
+                  <AvatarImage />
+                  <AvatarFallback>АИ</AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="font-semibold">Артём Ильченко</p>
+                  <p className="text-xs text-slate-400">Администратор</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
