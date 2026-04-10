@@ -6,7 +6,9 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatMoney(value: number) {
+export function formatMoney(value: number | undefined) {
+  if (!value) return '0 ₽';
+
   const format = (num: number, suffix: string) => {
     const rounded = +num.toFixed(1);
     return rounded % 1 === 0 ? `${Math.round(rounded)} ${suffix}` : `${rounded} ${suffix}`;

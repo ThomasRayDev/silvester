@@ -23,7 +23,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/projects/create" element={<ProjectCreate />} />
-        <Route path="/projects/1" element={<Project />} />
+        <Route path="/projects/:projectId" element={<Project />} />
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/requests" element={<Requests />} />
         <Route path="/reports" element={<Reports />} />

@@ -15,6 +15,7 @@ export type ProjectType = {
   end_date: string;
   status: string;
   budget: number;
+  spent_budget: number;
   team: User[];
   address: Address;
   author?: User;
@@ -22,6 +23,21 @@ export type ProjectType = {
   progress: number;
   created_at?: string;
   updated_at?: string;
+};
+
+export type TaskType = {
+  name: string;
+  description: string;
+  status: string;
+  assigneed_to: number;
+  priority: string;
+  deadline: string;
+  id: number;
+  project_id: number;
+  author: User;
+  assignee: User;
+  created_at: string;
+  updated_at: string;
 };
 
 export type CreateProjectType = {
@@ -42,5 +58,15 @@ export const getProjects = async () => {
 
 export const createProject = async (projectData: CreateProjectType) => {
   const response = await api.post('/projects/', projectData);
+  return response.data;
+};
+
+export const getOneProject = async (projectId: number) => {
+  const response = await api.get(`/projects/${projectId}`);
+  return response.data;
+};
+
+export const getTasks = async (projectId: number) => {
+  const response = await api.get(`/projects/${projectId}/tasks`);
   return response.data;
 };

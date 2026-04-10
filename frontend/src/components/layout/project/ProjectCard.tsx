@@ -3,8 +3,8 @@ import 'dayjs/locale/ru';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 
-import { Progress } from '../ui/progress';
-import { Separator } from '../ui/separator';
+import { Progress } from '../../ui/progress';
+import { Separator } from '../../ui/separator';
 import { useEnumsStore } from '@/stores/enumsStore';
 import { type Address } from '@/api/project';
 
@@ -19,7 +19,7 @@ type ProjectCardProps = {
   teamCount: number;
   progress: number;
   address: Address;
-  projectId: number;
+  projectId: number | undefined;
 };
 
 export default function ProjectCard({

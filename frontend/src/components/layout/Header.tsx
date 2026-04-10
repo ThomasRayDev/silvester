@@ -6,7 +6,7 @@ export default function Header() {
   const user = useUserStore();
 
   return (
-    <header className="fixed w-[calc(100vw-288px)] px-6 flex items-center justify-between bg-[#0c1327] h-20 border-b border-gray-800">
+    <header className="fixed w-[calc(100vw-288px)] px-6 flex items-center justify-between bg-[#0c1327] h-20 border-b border-gray-800 z-50">
       <SearchInput />
       <div className="flex gap-3 items-center">
         <div className="flex flex-col text-sm text-white">
