@@ -1,16 +1,14 @@
-import dayjs from 'dayjs';
-import 'dayjs/locale/ru';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
+import dayjs from '@/lib/dayjs-config';
 
-import { Progress } from '../ui/progress';
-import { Separator } from '../ui/separator';
+import { Progress } from '../../ui/progress';
+import { Separator } from '../../ui/separator';
 import { useEnumsStore } from '@/stores/enumsStore';
 import { type Address } from '@/api/project';
 
 import { formatAddress, formatMoney } from '@/lib/utils';
+import { Link } from 'react-router-dom';
 
-type ProjectProps = {
+type ProjectCardProps = {
   title: string;
   status: string;
   budget: number;
@@ -18,9 +16,10 @@ type ProjectProps = {
   teamCount: number;
   progress: number;
   address: Address;
+  projectId: number | undefined;
 };
 
-export default function Project({
+export default function ProjectCard({
   title,
   status,
   budget,
@@ -28,19 +27,20 @@ export default function Project({
   teamCount,
   progress,
   address,
-}: ProjectProps) {
+  projectId,
+}: ProjectCardProps) {
   const enums = useEnumsStore();
-
-  dayjs.extend(utc);
-  dayjs.extend(timezone);
-  dayjs.locale('ru');
 
   return (
     <div className="text-slate-100 w-full bg-[#0c1327] border-gray-800 border rounded-xl">
       <div className="h-40 rounded-lg" />
       <div className="p-6 flex flex-col justify-center gap-3">
         <div className="flex items-center justify-between">
-          <h2 className="font-semibold text-xl">{title}</h2>
+          <Link
+            to={`/projects/${projectId}`}
+            className="font-semibold text-xl cursor-pointer hover:underline">
+            {title}
+          </Link>
           <div className="text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary">
             {enums.projectStatuses?.find((s) => s.value === status)?.label ?? status}
           </div>

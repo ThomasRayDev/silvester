@@ -10,6 +10,7 @@ import {
   Login,
   ProjectCreate,
   NotFound,
+  Project,
 } from './pages';
 import MainLayout from './layouts/MainLayout';
 import LoginLayout from './layouts/LoginLayout';
@@ -22,6 +23,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/projects/create" element={<ProjectCreate />} />
+        <Route path="/projects/:projectId" element={<Project />} />
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/requests" element={<Requests />} />
         <Route path="/reports" element={<Reports />} />
