@@ -8,3 +8,4 @@ export { default as Settings } from './Settings';
 export { default as Login } from './Login';
 export { default as ProjectCreate } from './ProjectCreate';
 export { default as NotFound } from './NotFound';
+export { default as Project } from './Project';

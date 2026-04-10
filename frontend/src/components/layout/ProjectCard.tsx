@@ -10,7 +10,7 @@ import { type Address } from '@/api/project';
 
 import { formatAddress, formatMoney } from '@/lib/utils';
 
-type ProjectProps = {
+type ProjectCardProps = {
   title: string;
   status: string;
   budget: number;
@@ -20,7 +20,7 @@ type ProjectProps = {
   address: Address;
 };
 
-export default function Project({
+export default function ProjectCard({
   title,
   status,
   budget,
@@ -28,7 +28,7 @@ export default function Project({
   teamCount,
   progress,
   address,
-}: ProjectProps) {
+}: ProjectCardProps) {
   const enums = useEnumsStore();
 
   dayjs.extend(utc);

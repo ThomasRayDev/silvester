@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/Input';
 import { Building2, Calendar, ChartLine, Funnel, Plus, Users } from 'lucide-react';
 import { getProjects, type ProjectType } from '@/api/project';
-import Project from '@/components/layout/Project';
+import { ProjectCard } from '@/components/layout';
 import { useUserStore } from '@/stores/userStore';
 
 export default function Projects() {
@@ -94,7 +94,7 @@ export default function Projects() {
       </div>
       <div className="mt-6 grid grid-cols-2 gap-6">
         {projects.map((project) => (
-          <Project
+          <ProjectCard
             title={project.name}
             status={project.status}
             budget={project.budget}
