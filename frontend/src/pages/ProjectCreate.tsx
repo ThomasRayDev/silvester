@@ -127,6 +127,8 @@ export default function ProjectCreate() {
         description: 'Что-то пошло не так, обратитесь к администратору',
         position: 'top-center',
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 

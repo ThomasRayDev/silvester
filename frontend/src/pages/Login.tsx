@@ -55,7 +55,7 @@ export default function Login() {
         <div className="px-4 py-4">
           <h2 className="text-white font-bold text-xl">Вход в систему</h2>
           <div className="w-full flex justify-center">
-            <form onSubmit={form.handleSubmit(onSubmit)} className="w-3/4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="w-3/4" autoComplete="off">
               <FormRow<LoginFormData>
                 name="username"
                 control={form.control}
