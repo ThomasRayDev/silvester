@@ -14,4 +14,4 @@ export const createProjectSchema = z.object({
   team: z.array(z.number()).optional(),
 });
 
-export type СreateProjectData = z.infer<typeof createProjectSchema>;
+export type CreateProjectData = z.infer<typeof createProjectSchema>;

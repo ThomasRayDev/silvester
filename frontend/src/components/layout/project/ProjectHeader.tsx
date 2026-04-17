@@ -23,7 +23,7 @@ export default function ProjectHeader({ project }: ProjectHeaderProps) {
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
             {(user.userData?.role == 'admin' || user.userData?.role == 'manager') && (
-              <Button disabled>
+              <Button>
                 <Pencil />
               </Button>
             )}
