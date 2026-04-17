@@ -1,5 +1,5 @@
 import { getOneProject, updateProject } from '@/api/project';
-import { getAllUsers, type User } from '@/api/user';
+import { type User } from '@/api/user';
 import { ProjectForm } from '@/components/layout/project/ProjectForm';
 import { Button } from '@/components/ui/button';
 import { Field, FieldLabel } from '@/components/ui/field';
