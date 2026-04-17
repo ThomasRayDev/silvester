@@ -8,6 +8,7 @@ from app.models.task import Task
 from app.models.project import Project
 from app.models.user import User
 from app.models.enums import UserRole
+from app.models.project_members import project_members
 from app.schemas.task import TaskBase, TaskOut, TaskUpdate
 from app.routers.user import get_current_user, require_manager_or_admin
 
@@ -19,11 +20,15 @@ def get_tasks(project_id: int, current_user: User = Depends(get_current_user), d
   if not project:
     raise HTTPException(status_code=404, detail="Project not found")
   if current_user.role not in [UserRole.ADMIN, UserRole.MANAGER]:
-    has_access = db.query(Task).filter(
+    has_assigned_tasks = db.query(Task).filter(
       Task.project_id == project_id,
       Task.assigned_to == current_user.id
     ).first()
-    if not has_access:
+    in_team = db.query(project_members).filter(
+      project_members.c.project_id == project_id,
+      project_members.c.user_id == current_user.id,
+    ).first()
+    if not has_assigned_tasks and not in_team:
       raise HTTPException(status_code=403, detail="You don't have permission to access this project")
   if current_user.role in [UserRole.ADMIN, UserRole.MANAGER]:
     tasks = project.tasks
