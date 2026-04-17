@@ -17,21 +17,14 @@ export function ProjectEdit() {
 
   const [isLoading, setIsLoading] = React.useState(false);
   const [project, setProject] = React.useState<any>(null);
-  const [users, setUsers] = React.useState<User[]>([]);
   const [initialUsers, setInitialUsers] = React.useState<User[]>([]);
 
   React.useEffect(() => {
     if (!projectId) return;
 
     const loadData = async () => {
-      const [projectData, allUsers] = await Promise.all([
-        getOneProject(Number(projectId)),
-        getAllUsers(),
-      ]);
-
+      const projectData = await getOneProject(Number(projectId));
       setProject(projectData);
-      setUsers(allUsers);
-
       setInitialUsers([...projectData.team]);
     };
 
