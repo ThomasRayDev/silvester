@@ -70,3 +70,8 @@ export const getTasks = async (projectId: number) => {
   const response = await api.get(`/projects/${projectId}/tasks`);
   return response.data;
 };
+
+export const updateProject = async (projectId: number, projectData: CreateProjectType) => {
+  const response = await api.put(`/projects/${projectId}/`, projectData);
+  return response.data;
+};
