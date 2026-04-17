@@ -39,7 +39,7 @@ type ProjectFormProps = {
   isLoading?: boolean;
 };
 
-export function ProjectForm({
+export default function ProjectForm({
   defaultValues,
   initialUsers,
   onSubmit,

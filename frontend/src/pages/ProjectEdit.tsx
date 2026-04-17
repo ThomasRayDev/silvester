@@ -1,6 +1,6 @@
 import { getOneProject, updateProject } from '@/api/project';
 import { type User } from '@/api/user';
-import { ProjectForm } from '@/components/layout/project/ProjectForm';
+import { ProjectForm } from '@/components/layout';
 import { Button } from '@/components/ui/button';
 import { Field, FieldLabel } from '@/components/ui/field';
 import { Textarea } from '@/components/ui/textarea';

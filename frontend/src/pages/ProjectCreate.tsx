@@ -8,7 +8,7 @@ import { type User } from '@/api/user';
 import { type CreateProjectData } from '@/schemas/createProjectSchema';
 import { createProject } from '@/api/project';
 import { toast } from 'sonner';
-import { ProjectForm } from '@/components/layout/project/ProjectForm';
+import { ProjectForm } from '@/components/layout';
 
 export default function ProjectCreate() {
   const navigate = useNavigate();

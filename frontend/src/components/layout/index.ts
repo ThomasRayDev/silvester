@@ -9,3 +9,4 @@ export { default as ProjectHeader } from './project/ProjectHeader';
 export { default as ProjectStats } from './project/ProjectStats';
 export { default as ProjectTasks } from './project/ProjectTasks';
 export { default as ProjectTeam } from './project/ProjectTeam';
+export { default as ProjectForm } from './project/ProjectForm';
