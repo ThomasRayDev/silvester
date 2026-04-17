@@ -1,15 +1,13 @@
 import { getOneProject, getTasks, type ProjectType, type TaskType } from '@/api/project';
 import { ProjectHeader, ProjectStats, ProjectTasks, ProjectTeam } from '@/components/layout';
-import { Button } from '@/components/ui/button';
 import { ArrowLeft, Camera } from 'lucide-react';
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 export default function Project() {
   const [project, setProject] = React.useState<ProjectType>();
   const [tasks, setTasks] = React.useState<TaskType[]>([]);
 
-  const navigate = useNavigate();
   const { projectId } = useParams();
 
   React.useEffect(() => {
@@ -36,13 +34,12 @@ export default function Project() {
     <>
       <title>{project.name}</title>
       <div className="flex flex-col gap-6">
-        <Button
-          variant="link"
-          className="text-slate-400 w-max"
-          onClick={() => navigate('/projects')}>
-          <ArrowLeft />
+        <Link
+          className="text-slate-400 w-max flex items-center gap-2 cursor-pointer hover:underline text-sm"
+          to="/projects">
+          <ArrowLeft size={16} />
           Назад к проектам
-        </Button>
+        </Link>
         <ProjectHeader project={project} />
         <ProjectStats project={project} tasks={tasks} />
         <div className="flex justify-between gap-5">
