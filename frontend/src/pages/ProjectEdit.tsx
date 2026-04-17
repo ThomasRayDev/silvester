@@ -1,5 +1,5 @@
 import { getOneProject, updateProject } from '@/api/project';
-import type { User } from '@/api/user';
+import { getAllUsers, type User } from '@/api/user';
 import { ProjectForm } from '@/components/layout/project/ProjectForm';
 import { Button } from '@/components/ui/button';
 import { Field, FieldLabel } from '@/components/ui/field';
@@ -12,25 +12,39 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 
 export function ProjectEdit() {
-  const { id } = useParams();
+  const { projectId } = useParams();
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = React.useState(false);
   const [project, setProject] = React.useState<any>(null);
+  const [users, setUsers] = React.useState<User[]>([]);
+  const [initialUsers, setInitialUsers] = React.useState<User[]>([]);
 
   React.useEffect(() => {
-    if (!id) return;
+    if (!projectId) return;
 
-    getOneProject(Number(id)).then(setProject);
-  }, [id]);
+    const loadData = async () => {
+      const [projectData, allUsers] = await Promise.all([
+        getOneProject(Number(projectId)),
+        getAllUsers(),
+      ]);
+
+      setProject(projectData);
+      setUsers(allUsers);
+
+      setInitialUsers([...projectData.team]);
+    };
+
+    loadData();
+  }, [projectId]);
 
   const handleUpdate = async (data: CreateProjectData, users: User[]) => {
-    if (!id) return;
+    if (!projectId) return;
 
     setIsLoading(true);
 
     try {
-      await updateProject(Number(id), {
+      await updateProject(Number(projectId), {
         name: data.name,
         description: data.description,
         start_date: data.start_date,
@@ -46,10 +60,16 @@ export function ProjectEdit() {
         },
       });
 
-      toast.success('Проект обновлен');
-      navigate('/projects');
+      toast.success('Редактирование проекта', {
+        description: `Проект "${project.name}" успешно изменен`,
+        position: 'top-center',
+      });
+      navigate(`/projects/${projectId}`);
     } catch (error) {
-      toast.error('Ошибка при обновлении');
+      toast.error('Ошибка', {
+        description: 'Что-то пошло не так, обратитесь к администратору',
+        position: 'top-center',
+      });
     } finally {
       setIsLoading(false);
     }
@@ -62,7 +82,7 @@ export function ProjectEdit() {
   return (
     <>
       <div className="flex gap-4 items-center">
-        <Button className="size-10" onClick={() => navigate('/projects')}>
+        <Button className="size-10" onClick={() => navigate(`/projects/${projectId}`)}>
           <Undo2 className="size-5" />
         </Button>
         <h1 className="text-slate-100 text-3xl font-bold">Редактирование проекта</h1>
@@ -71,6 +91,7 @@ export function ProjectEdit() {
         <div className="mt-5 text-slate-100 w-2/3 bg-[#0c1327] p-5 border-gray-800 border rounded-xl">
           <ProjectForm
             defaultValues={mapProjectToForm(project)}
+            initialUsers={initialUsers}
             onSubmit={handleUpdate}
             isLoading={isLoading}
           />

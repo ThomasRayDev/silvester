@@ -34,11 +34,17 @@ import { Spinner } from '@/components/ui/spinner';
 
 type ProjectFormProps = {
   defaultValues?: Partial<CreateProjectData>;
+  initialUsers?: User[];
   onSubmit: (data: CreateProjectData, users: User[]) => Promise<void>;
   isLoading?: boolean;
 };
 
-export function ProjectForm({ defaultValues, onSubmit, isLoading }: ProjectFormProps) {
+export function ProjectForm({
+  defaultValues,
+  initialUsers,
+  onSubmit,
+  isLoading,
+}: ProjectFormProps) {
   const enums = useEnumsStore();
 
   const form = useForm<CreateProjectData>({
@@ -70,6 +76,12 @@ export function ProjectForm({ defaultValues, onSubmit, isLoading }: ProjectFormP
   React.useEffect(() => {
     getAllUsers().then(setUserList);
   }, []);
+
+  React.useEffect(() => {
+    if (initialUsers) {
+      setAddedUsers([...initialUsers]);
+    }
+  }, [initialUsers]);
 
   const availableUsers = React.useMemo(
     () => userList.filter((u) => !addedUsers.find((a) => a.id === u.id)),

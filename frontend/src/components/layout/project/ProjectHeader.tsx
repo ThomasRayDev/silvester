@@ -5,12 +5,14 @@ import { formatAddress } from '@/lib/utils';
 import { useEnumsStore } from '@/stores/enumsStore';
 import { useUserStore } from '@/stores/userStore';
 import { MapPin, Pencil } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 type ProjectHeaderProps = {
   project: ProjectType;
 };
 
 export default function ProjectHeader({ project }: ProjectHeaderProps) {
+  const navigate = useNavigate();
   const enums = useEnumsStore();
   const user = useUserStore();
 
@@ -23,7 +25,7 @@ export default function ProjectHeader({ project }: ProjectHeaderProps) {
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
             {(user.userData?.role == 'admin' || user.userData?.role == 'manager') && (
-              <Button>
+              <Button onClick={() => navigate(`/projects/${project.id}/edit`)}>
                 <Pencil />
               </Button>
             )}

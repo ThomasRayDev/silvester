@@ -14,6 +14,7 @@ import {
 } from './pages';
 import MainLayout from './layouts/MainLayout';
 import LoginLayout from './layouts/LoginLayout';
+import { ProjectEdit } from './pages/ProjectEdit';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/projects" element={<Projects />} />
         <Route path="/projects/create" element={<ProjectCreate />} />
         <Route path="/projects/:projectId" element={<Project />} />
+        <Route path="/projects/:projectId/edit" element={<ProjectEdit />} />
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/requests" element={<Requests />} />
         <Route path="/reports" element={<Reports />} />
